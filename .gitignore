@@ -1,5 +1,6 @@
-# VS Code
+# Project
 *.vsix
+out
 
 # Yarn
 .yarn/*

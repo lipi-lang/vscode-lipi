@@ -35,6 +35,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@types/vscode", "npm:1.64.0"],
             ["@types/which", "npm:2.0.1"],
             ["prettier", "npm:2.5.1"],
             ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"],
@@ -42,6 +43,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["which", "npm:2.0.2"]
           ],
           "linkType": "SOFT",
+        }]
+      ]],
+      ["@types/vscode", [
+        ["npm:1.64.0", {
+          "packageLocation": "./.yarn/cache/@types-vscode-npm-1.64.0-a4929cc351-428cfce7f3.zip/node_modules/@types/vscode/",
+          "packageDependencies": [
+            ["@types/vscode", "npm:1.64.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["@types/which", [
@@ -96,6 +106,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["lipi", "workspace:."],
+            ["@types/vscode", "npm:1.64.0"],
             ["@types/which", "npm:2.0.1"],
             ["prettier", "npm:2.5.1"],
             ["typescript", "patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"],
