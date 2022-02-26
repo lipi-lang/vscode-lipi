@@ -1,25 +1,52 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Lipi",
-  "patterns": [{ "include": "#keywords" }, { "include": "#strings" }],
+  "patterns": [{ "include": "#comment" }, { "include": "#atom" }],
   "repository": {
-    "keywords": {
+    "comment": {
+      "name": "comment.line.lipi",
+      "begin": ";",
+      "end": "\n"
+    },
+    "atom": {
       "patterns": [
-        {
-          "name": "keyword.control.lipi",
-          "match": "\\b(if|while|for|return)\\b"
-        }
+        { "include": "#atom-keyword" },
+        { "include": "#atom-character" },
+        { "include": "#atom-string" },
+        { "include": "#atom-number" },
+        { "include": "#atom-list" }
       ]
     },
-    "strings": {
-      "name": "string.quoted.double.lipi",
+    "atom-keyword": {
+      "name": "entity.name.tag.lipi",
+      "match": ":([[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
+    },
+    "atom-character": {
+      "name": "string.other.lipi",
+      "match": "\\\\(?:u[0-9a-fA-F]{2,6}|space|newline|tab|formfeed|backspace|return|.)"
+    },
+    "atom-string": {
+      "name": "string.quoted.lipi",
       "begin": "\"",
-      "end": "\"",
+      "end": "\""
+    },
+    "atom-number": {
+      "name": "constant.numeric.lipi",
+      "match": "~?\\b[[:digit:]]+(?:\\.[[:digit:]]*)?\\b"
+    },
+    "atom-list": {
+      "begin": "(?<!')\\(",
+      "end": "\\)",
       "patterns": [
         {
-          "name": "constant.character.escape.lipi",
-          "match": "\\\\."
-        }
+          "match": "(?<=\\()(?:\\s*)(?:(def[^\\s]*|declare|import|module)|@?[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)",
+          "captures": {
+            "0": { "name": "entity.name.function.lipi" },
+            "1": { "name": "support.function.lipi" }
+          }
+        },
+        { "include": "#atom" },
+        { "include": "#comment" }
       ]
     }
   },
