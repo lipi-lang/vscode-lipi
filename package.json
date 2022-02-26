@@ -1,0 +1,49 @@
+{
+  "name": "lipi",
+  "displayName": "Lipi",
+  "description": "Lipi language support for Visual Studio Code",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.64.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:lipi"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "lipi",
+        "aliases": [
+          "Lipi",
+          "lipi"
+        ],
+        "extensions": [
+          ".lipi"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lipi",
+        "scopeName": "source.lipi",
+        "path": "./syntaxes/lipi.tmLanguage.json"
+      }
+    ]
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0",
+    "which": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/which": "^2.0.1",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
+  }
+}
