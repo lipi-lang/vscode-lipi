@@ -22,7 +22,7 @@
         { "include": "#atom-character" },
         { "include": "#atom-string" },
         { "include": "#atom-number" },
-        { "include": "#atom-list" }
+        { "include": "#atom-sexp" }
       ]
     },
     "atom-keyword": {
@@ -71,20 +71,18 @@
       "name": "constant.numeric.lipi",
       "match": "~?\\b[[:digit:]]+(?:\\.[[:digit:]]*)?\\b"
     },
-    "atom-list": {
+    "atom-sexp": {
       "begin": "(?<!')\\(",
       "end": "\\)",
       "patterns": [
         {
-          "match": "(?<=\\()(?:\\s*)(?:(declare|def[^\\s]*|forall|import|let|module)|@?[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)",
+          "match": "(?<=\\()(?:\\s*)(?:(declare|def[^\\s]*|forall|import|let|module)|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
           "captures": {
             "0": { "name": "entity.name.function.lipi" },
             "1": { "name": "support.function.lipi" }
           }
         },
-        { "include": "#comment" },
-        { "include": "#metadata" },
-        { "include": "#atom" }
+        { "include": "$self" }
       ]
     }
   },
