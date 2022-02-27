@@ -40,7 +40,7 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "yarn build",
+    "vscode:prepublish": "pnpm build",
     "build": "tsc -b",
     "watch": "tsc -b -w"
   },

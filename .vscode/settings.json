@@ -3,8 +3,8 @@
   "editor.formatOnSave": true,
   "editor.rulers": [80, 120],
   "editor.tabSize": 2,
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "search.exclude": { "**/.yarn": true, "**/.pnp.*": true },
+  "prettier.prettierPath": "./node_modules/prettier/index.js",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": ".yarn/sdks/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "search.exclude": { "**/node_modules": true }
 }
