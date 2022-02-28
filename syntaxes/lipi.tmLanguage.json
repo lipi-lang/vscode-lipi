@@ -13,12 +13,31 @@
       "end": "\n"
     },
     "metadata": {
-      "name": "entity.name.tag.lipi",
+      "patterns": [
+        { "include": "#metadata-symbol" },
+        { "include": "#metadata-sexp" }
+      ]
+    },
+    "metadata-symbol": {
+      "name": "comment.line.lipi",
       "match": "\\^(?:[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
+    },
+    "metadata-sexp": {
+      "name": "comment.line.lipi",
+      "begin": "\\^\\(",
+      "end": "\\)",
+      "patterns": [{ "include": "#metadata-sexp-child" }]
+    },
+    "metadata-sexp-child": {
+      "name": "comment.line.lipi",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [{ "include": "#metadata-sexp-child" }]
     },
     "atom": {
       "patterns": [
         { "include": "#atom-keyword" },
+        { "include": "#atom-indexed-parameter" },
         { "include": "#atom-character" },
         { "include": "#atom-string" },
         { "include": "#atom-number" },
@@ -27,7 +46,11 @@
     },
     "atom-keyword": {
       "name": "entity.name.tag.lipi",
-      "match": ":([[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
+      "match": ":{1,2}([[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
+    },
+    "atom-indexed-parameter": {
+      "name": "keyword.operator.lipi",
+      "match": "(?<=\\(|\\s)%[0-9]+\\b"
     },
     "atom-character": {
       "name": "string.other.lipi",
@@ -69,17 +92,17 @@
     },
     "atom-number": {
       "name": "constant.numeric.lipi",
-      "match": "~?\\b[[:digit:]]+(?:\\.[[:digit:]]*)?\\b"
+      "match": "(?<!%)~?\\b[[:digit:]]+(?:\\.[[:digit:]]*)?\\b"
     },
     "atom-sexp": {
       "begin": "(?<!')\\(",
       "end": "\\)",
       "patterns": [
         {
-          "match": "(?<=\\()(?:\\s*)(?:(declare|def[^\\s]*|forall|import|let|module)|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
+          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[^\\s]*|derives|either|forall|fn|import|is|let|module|not[^\\s]*|or)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
           "captures": {
             "0": { "name": "entity.name.function.lipi" },
-            "1": { "name": "support.function.lipi" }
+            "1": { "name": "keyword.control.lipi" }
           }
         },
         { "include": "$self" }
