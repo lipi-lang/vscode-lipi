@@ -37,6 +37,12 @@
         "scopeName": "source.lipi",
         "path": "./syntaxes/lipi.tmLanguage.json"
       }
+    ],
+    "snippets": [
+      {
+        "language": "lipi",
+        "path": "./snippets/lipi.json"
+      }
     ]
   },
   "scripts": {

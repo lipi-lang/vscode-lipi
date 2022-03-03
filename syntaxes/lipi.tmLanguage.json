@@ -79,7 +79,7 @@
     },
     "atom-character": {
       "name": "string.other.lipi",
-      "match": "\\$(?:u[0-9a-fA-F]{2,6}|space|newline|tab|formfeed|backspace|return|.)"
+      "match": "#?\\\\(?:x[a-fA-F0-9]{2}|u{[a-fA-F0-9]{2,6}}|space|newline|tab|formfeed|backspace|return|.)"
     },
     "atom-string": {
       "patterns": [
@@ -124,7 +124,7 @@
       "end": "\\)",
       "patterns": [
         {
-          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[^\\s]*|derives|either|forall|fn|let|not[^\\s]*|or|using)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
+          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|either|forall|fn|import|let|not[^\\s]*|or|using)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
           "captures": {
             "0": { "name": "entity.name.function.lipi" },
             "1": { "name": "keyword.control.lipi" }
