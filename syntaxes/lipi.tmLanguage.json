@@ -8,31 +8,56 @@
   ],
   "repository": {
     "comment": {
+      "patterns": [
+        { "include": "#comment-line" },
+        { "include": "#comment-block" }
+      ]
+    },
+    "comment-line": {
       "name": "comment.line.lipi",
       "begin": ";",
       "end": "\n"
     },
+    "comment-block": {
+      "name": "comment.block.lipi",
+      "begin": "_(#*)\\(",
+      "end": "\\)\\1",
+      "patterns": [{ "include": "#comment-block-nested-sexp" }]
+    },
+    "comment-block-nested-sexp": {
+      "name": "comment.block.lipi",
+      "begin": "_?\\(",
+      "end": "\\)",
+      "patterns": [{ "include": "#comment-block-nested-sexp" }]
+    },
     "metadata": {
       "patterns": [
         { "include": "#metadata-symbol" },
-        { "include": "#metadata-sexp" }
+        { "include": "#metadata-parenthesis" },
+        { "include": "#metadata-bracket" }
       ]
     },
     "metadata-symbol": {
       "name": "comment.line.lipi",
       "match": "\\^(?:[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
     },
-    "metadata-sexp": {
+    "metadata-parenthesis": {
       "name": "comment.line.lipi",
       "begin": "\\^\\(",
       "end": "\\)",
-      "patterns": [{ "include": "#metadata-sexp-child" }]
+      "patterns": [{ "include": "#metadata-nested-sexp" }]
     },
-    "metadata-sexp-child": {
+    "metadata-bracket": {
+      "name": "comment.line.lipi",
+      "begin": "\\^\\[",
+      "end": "\\]",
+      "patterns": [{ "include": "#metadata-nested-sexp" }]
+    },
+    "metadata-nested-sexp": {
       "name": "comment.line.lipi",
       "begin": "\\(",
       "end": "\\)",
-      "patterns": [{ "include": "#metadata-sexp-child" }]
+      "patterns": [{ "include": "#metadata-nested-sexp" }]
     },
     "atom": {
       "patterns": [
@@ -99,7 +124,7 @@
       "end": "\\)",
       "patterns": [
         {
-          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[^\\s]*|derives|either|forall|fn|import|is|let|module|not[^\\s]*|or)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
+          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[^\\s]*|derives|either|forall|fn|let|not[^\\s]*|or|using)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
           "captures": {
             "0": { "name": "entity.name.function.lipi" },
             "1": { "name": "keyword.control.lipi" }
