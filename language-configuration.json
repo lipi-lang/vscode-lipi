@@ -3,7 +3,7 @@
     // symbol used for single line comment
     "lineComment": ";;",
     // symbols used for start and end a block comment
-    "blockComment": ["_(", ")"]
+    "blockComment": ["#_(", ")"]
   },
   // symbols used as brackets
   "brackets": [

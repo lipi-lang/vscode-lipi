@@ -9,9 +9,15 @@
   "repository": {
     "comment": {
       "patterns": [
+        { "include": "#comment-shebang" },
         { "include": "#comment-line" },
         { "include": "#comment-block" }
       ]
+    },
+    "comment-shebang": {
+      "name": "comment.line.lipi",
+      "begin": "^#!",
+      "end": "\n"
     },
     "comment-line": {
       "name": "comment.line.lipi",
@@ -20,15 +26,9 @@
     },
     "comment-block": {
       "name": "comment.block.lipi",
-      "begin": "_(#*)\\(",
+      "begin": "#_(%*)\\(",
       "end": "\\)\\1",
-      "patterns": [{ "include": "#comment-block-nested-sexp" }]
-    },
-    "comment-block-nested-sexp": {
-      "name": "comment.block.lipi",
-      "begin": "_?\\(",
-      "end": "\\)",
-      "patterns": [{ "include": "#comment-block-nested-sexp" }]
+      "patterns": [{ "include": "#comment-block" }]
     },
     "metadata": {
       "patterns": [
@@ -63,9 +63,9 @@
       "patterns": [
         { "include": "#atom-keyword" },
         { "include": "#atom-indexed-parameter" },
+        { "include": "#atom-number" },
         { "include": "#atom-character" },
         { "include": "#atom-string" },
-        { "include": "#atom-number" },
         { "include": "#atom-sexp" }
       ]
     },
@@ -75,11 +75,25 @@
     },
     "atom-indexed-parameter": {
       "name": "keyword.operator.lipi",
-      "match": "(?<=\\(|\\s)%[0-9]+\\b"
+      "match": "(?<=^|[(\\[\\{\\s])%[[:digit:]]+(?=[\\s\\}\\]\\)])"
+    },
+    "atom-number": {
+      "patterns": [
+        { "include": "#atom-number-custom-base" },
+        { "include": "#atom-number-default-base" }
+      ]
+    },
+    "atom-number-custom-base": {
+      "name": "constant.numeric.lipi",
+      "match": "(?<=^|[\\(\\[\\{\\s])(?<!%)~?#[[:digit:]]+'[[:alnum:]][[:alnum:],]*(?=[\\s\\}\\]\\)])"
+    },
+    "atom-number-default-base": {
+      "name": "constant.numeric.lipi",
+      "match": "(?<=^|[\\(\\[\\{\\s])~?[[:digit:]][[:digit:],]*(?:\\.[[:digit:],]+)?(?=[\\s\\}\\]\\)])"
     },
     "atom-character": {
       "name": "string.other.lipi",
-      "match": "#?\\\\(?:x[a-fA-F0-9]{2}|u{[a-fA-F0-9]{2,6}}|space|newline|tab|formfeed|backspace|return|.)"
+      "match": "(?<=^|[\\(\\[\\{\\s])\\\\(?:x[a-fA-F0-9]{2}|u{[a-fA-F0-9]{2,6}}|backspace|formfeed|newline|null|return|space|tab|.)(?=[\\s\\}\\]\\)])"
     },
     "atom-string": {
       "patterns": [
@@ -114,10 +128,6 @@
       "begin": "\"{1}",
       "end": "\"{1}",
       "patterns": [{ "include": "#atom-string-escape" }]
-    },
-    "atom-number": {
-      "name": "constant.numeric.lipi",
-      "match": "(?<!%)~?\\b[[:digit:]]+(?:\\.[[:digit:]]*)?\\b"
     },
     "atom-sexp": {
       "begin": "(?<!')\\(",
