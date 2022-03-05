@@ -17,7 +17,7 @@ record_pair = { keyword ~ form }
 
 keyword = @{ ":" ~ symbol }
 symbol = @{ "@"? ~ symbol_head ~ symbol_rest* }
-character = @{ "\\" ~ (alpha_num)+ }
+character = @{ "\" ~ (alpha_num)+ }
 string = @{ "\"" ~ (!"\"" ~ ANY)* ~ "\"" }
 float = @{ "~"? ~ integer? ~ "." ~ integer? }
 integer = @{ "~"? ~ digit+ }
