@@ -1,11 +1,15 @@
 {
+  "Definition form": {
+    "prefix": ["def"],
+    "body": ["(def ${1:x} ${0:???})"]
+  },
   "Case form": {
     "prefix": ["case"],
     "body": ["(case ${1:???}", "\t${2:_} ${0:???})"]
   },
   "Function form": {
-    "prefix": ["defn"],
-    "body": ["(defn ${1:f} [${2:arg}]", "\t${0:???})"]
+    "prefix": ["fn"],
+    "body": ["(fn [${2:arg}]", "\t${0:???})"]
   },
   "Let form": {
     "prefix": ["let"],

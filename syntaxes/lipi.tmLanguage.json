@@ -34,27 +34,34 @@
       "patterns": [
         { "include": "#metadata-symbol" },
         { "include": "#metadata-parenthesis" },
-        { "include": "#metadata-bracket" }
+        { "include": "#metadata-bracket" },
+        { "include": "#metadata-brace" }
       ]
     },
     "metadata-symbol": {
-      "name": "comment.line.lipi",
+      "name": "entity.name.type.lipi",
       "match": "\\^(?:[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
     },
     "metadata-parenthesis": {
-      "name": "comment.line.lipi",
+      "name": "entity.name.type.lipi",
       "begin": "\\^\\(",
       "end": "\\)",
       "patterns": [{ "include": "#metadata-nested-sexp" }]
     },
     "metadata-bracket": {
-      "name": "comment.line.lipi",
+      "name": "entity.name.type.lipi",
       "begin": "\\^\\[",
       "end": "\\]",
       "patterns": [{ "include": "#metadata-nested-sexp" }]
     },
+    "metadata-brace": {
+      "name": "entity.name.type.lipi",
+      "begin": "\\^\\{",
+      "end": "\\}",
+      "patterns": [{ "include": "#metadata-nested-sexp" }]
+    },
     "metadata-nested-sexp": {
-      "name": "comment.line.lipi",
+      "name": "entity.name.type.lipi",
       "begin": "\\(",
       "end": "\\)",
       "patterns": [{ "include": "#metadata-nested-sexp" }]
@@ -71,11 +78,11 @@
     },
     "atom-keyword": {
       "name": "entity.name.tag.lipi",
-      "match": ":{1,2}([[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
+      "match": ":{1,2}@?([[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
     },
     "atom-indexed-parameter": {
-      "name": "keyword.operator.lipi",
-      "match": "(?<=^|[(\\[\\{\\s])%[[:digit:]]+(?=[\\s\\}\\]\\)])"
+      "name": "entity.name.tag.lipi",
+      "match": "(?<=^|[(\\[\\{\\s])%[[:digit:]]*(?=[\\s\\}\\]\\)])"
     },
     "atom-number": {
       "patterns": [
@@ -133,18 +140,13 @@
       "patterns": [{ "include": "#atom-string-escape" }]
     },
     "atom-sexp": {
-      "begin": "(?<!')\\(",
+      "begin": "(?<!')\\(\\s*(?:(->{1,2}|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|or|(?:import|use|using))(?=[\\s\\)])|(@?[\\.~!^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
       "end": "\\)",
-      "patterns": [
-        {
-          "match": "(?<=\\()(?:\\s*)(?:(%[0-9]+|:{2}|->|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|either|forall|fn|import|let|not[^\\s]*|or|using)(?=\\s|\\))|(@?[~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
-          "captures": {
-            "0": { "name": "entity.name.function.lipi" },
-            "1": { "name": "keyword.control.lipi" }
-          }
-        },
-        { "include": "$self" }
-      ]
+      "beginCaptures": {
+        "1": { "name": "storage.type.lipi keyword.other.lipi" },
+        "2": { "name": "entity.name.function.lipi" }
+      },
+      "patterns": [{ "include": "$self" }]
     }
   },
   "scopeName": "source.lipi"
