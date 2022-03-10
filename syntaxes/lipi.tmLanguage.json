@@ -3,7 +3,7 @@
   "name": "Lipi",
   "patterns": [
     { "include": "#comment" },
-    { "include": "#metadata" },
+    { "include": "#annotation" },
     { "include": "#atom" }
   ],
   "repository": {
@@ -30,41 +30,41 @@
       "end": "\\)\\1",
       "patterns": [{ "include": "#comment-block" }]
     },
-    "metadata": {
+    "annotation": {
       "patterns": [
-        { "include": "#metadata-symbol" },
-        { "include": "#metadata-parenthesis" },
-        { "include": "#metadata-bracket" },
-        { "include": "#metadata-brace" }
+        { "include": "#annotation-symbol" },
+        { "include": "#annotation-parenthesis" },
+        { "include": "#annotation-bracket" },
+        { "include": "#annotation-brace" }
       ]
     },
-    "metadata-symbol": {
+    "annotation-symbol": {
       "name": "entity.name.type.lipi",
       "match": "\\^(?:[[:alpha:]!$?*\\-=_+<>.?][\\/[:alnum:]!$?*\\-=_+<>.?]*)"
     },
-    "metadata-parenthesis": {
+    "annotation-parenthesis": {
       "name": "entity.name.type.lipi",
       "begin": "\\^\\(",
       "end": "\\)",
-      "patterns": [{ "include": "#metadata-nested-sexp" }]
+      "patterns": [{ "include": "#annotation-nested-sexp" }]
     },
-    "metadata-bracket": {
+    "annotation-bracket": {
       "name": "entity.name.type.lipi",
       "begin": "\\^\\[",
       "end": "\\]",
-      "patterns": [{ "include": "#metadata-nested-sexp" }]
+      "patterns": [{ "include": "#annotation-nested-sexp" }]
     },
-    "metadata-brace": {
+    "annotation-brace": {
       "name": "entity.name.type.lipi",
       "begin": "\\^\\{",
       "end": "\\}",
-      "patterns": [{ "include": "#metadata-nested-sexp" }]
+      "patterns": [{ "include": "#annotation-nested-sexp" }]
     },
-    "metadata-nested-sexp": {
+    "annotation-nested-sexp": {
       "name": "entity.name.type.lipi",
       "begin": "\\(",
       "end": "\\)",
-      "patterns": [{ "include": "#metadata-nested-sexp" }]
+      "patterns": [{ "include": "#annotation-nested-sexp" }]
     },
     "atom": {
       "patterns": [
@@ -140,7 +140,7 @@
       "patterns": [{ "include": "#atom-string-escape" }]
     },
     "atom-sexp": {
-      "begin": "(?<!')\\(\\s*(?:(->{1,2}|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|or|(?:import|use|using))(?=[\\s\\)])|(@?[\\.~!^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
+      "begin": "(?<!')\\(\\s*(?:(->{1,2}|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|or|pragma|(?:import|use|using))(?=[\\s\\)])|(@?[\\.~!^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
       "end": "\\)",
       "beginCaptures": {
         "1": { "name": "storage.type.lipi keyword.other.lipi" },
