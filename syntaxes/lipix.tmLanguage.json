@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Lipi Extended",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#scope-block" },
+    { "include": "#top-level" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        { "include": "#comment-block" },
+        { "include": "#comment-line" }
+      ]
+    },
+    "comment-line": {
+      "name": "comment.line.lipi",
+      "begin": "#",
+      "end": "\n"
+    },
+    "comment-block": {
+      "name": "comment.block.lipi",
+      "begin": "#(%*)\\[",
+      "end": "\\]\\1#",
+      "patterns": [{ "include": "#comment-block" }]
+    },
+    "scope-block": {
+      "begin": "(<{3})",
+      "end": "(>{3})",
+      "beginCaptures": { "1": { "name": "string" } },
+      "endCaptures": { "1": { "name": "string" } }
+    },
+    "top-level": {
+      "patterns": [{ "include": "#declaration" }]
+    },
+    "declaration": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#declaration-module" },
+        { "include": "#declaration-function" }
+      ]
+    },
+    "declaration-module": {
+      "begin": "\\s*(defmodule)\\s+([[:alnum:]'_-]+\\*?)\\s+(is)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "2": { "name": "entity.name.class" },
+        "3": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#declaration" }]
+    },
+    "declaration-function": {
+      "begin": "(def)\\s+([[:alnum:]_-]+\\*?)(\\(.*\\))(:\\s+([[:alnum:]_-]+\\*?))?\\s+(is)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "2": { "name": "entity.name.function" },
+        "5": { "name": "entity.name.type" },
+        "6": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#declaration" }]
+    }
+  },
+  "scopeName": "source.lipi-extended"
+}

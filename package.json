@@ -15,7 +15,8 @@
     "Snippets"
   ],
   "activationEvents": [
-    "onLanguage:lipi"
+    "onLanguage:lipi",
+    "onLanguage:lipi-extended"
   ],
   "contributes": {
     "languages": [
@@ -28,7 +29,18 @@
         "extensions": [
           ".lipi"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./configurations/lipi.json"
+      },
+      {
+        "id": "lipi-extended",
+        "aliases": [
+          "Lipi Extended",
+          "lipi extended"
+        ],
+        "extensions": [
+          ".lipix"
+        ],
+        "configuration": "./configurations/lipix.json"
       }
     ],
     "grammars": [
@@ -36,12 +48,21 @@
         "language": "lipi",
         "scopeName": "source.lipi",
         "path": "./syntaxes/lipi.tmLanguage.json"
+      },
+      {
+        "language": "lipi-extended",
+        "scopeName": "source.lipi-extended",
+        "path": "./syntaxes/lipix.tmLanguage.json"
       }
     ],
     "snippets": [
       {
         "language": "lipi",
         "path": "./snippets/lipi.json"
+      },
+      {
+        "language": "lipi-extended",
+        "path": "./snippets/lipix.json"
       }
     ]
   },
