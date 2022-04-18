@@ -3,6 +3,23 @@
   "name": "Lipi Extended",
   "patterns": [{ "include": "#comment" }, { "include": "#top-level" }],
   "repository": {
+    "comment": {
+      "patterns": [
+        { "include": "#comment-block" },
+        { "include": "#comment-line" }
+      ]
+    },
+    "comment-block": {
+      "name": "comment.block.lipi",
+      "begin": "#(%*)\\[",
+      "end": "\\]\\1#",
+      "patterns": [{ "include": "#comment-block" }]
+    },
+    "comment-line": {
+      "name": "comment.line.lipi",
+      "begin": "#",
+      "end": "\n"
+    },
     "common-pattern": {
       "patterns": [
         {
@@ -77,29 +94,11 @@
         }
       ]
     },
-    "comment": {
-      "patterns": [
-        { "include": "#comment-block" },
-        { "include": "#comment-line" }
-      ]
-    },
-    "comment-line": {
-      "name": "comment.line.lipi",
-      "begin": "#",
-      "end": "\n"
-    },
-    "comment-block": {
-      "name": "comment.block.lipi",
-      "begin": "#(%*)\\[",
-      "end": "\\]\\1#",
-      "patterns": [{ "include": "#comment-block" }]
-    },
     "top-level": {
       "patterns": [{ "include": "#declaration" }, { "include": "#expression" }]
     },
     "declaration": {
       "patterns": [
-        { "include": "#comment" },
         { "include": "#declaration-module" },
         { "include": "#declaration-type" },
         { "include": "#declaration-alias" },
@@ -185,6 +184,7 @@
     "expression": {
       "patterns": [
         { "include": "#expression-literal" },
+        { "include": "#expression-closure" },
         { "include": "#expression-function-invocation" },
         { "include": "#expression-if" },
         { "include": "#expression-when" }
@@ -209,6 +209,21 @@
           "match": "(?<![[:alnum:]'._-])[0-9]+(?:\\.[0-9]+)?"
         }
       ]
+    },
+    "expression-closure": {
+      "begin": "(?<=^|\\s|=)(fn)\\s*(\\((.*)\\))(\\s*(:)\\s+([[:alpha:]_][[:alnum:]'._-]*))?\\s+(is)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "3": { "patterns": [{ "include": "#common-typed-param" }] },
+        "5": { "name": "keyword" },
+        "6": { "name": "entity.name.type" },
+        "7": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#declaration" }, { "include": "#expression" }]
     },
     "expression-function-invocation": {
       "match": "((?:[[:alpha:]][[:alnum:]'_-]*\\.)+)?([[:alpha:]_][[:alnum:]'_-]*)(?=\\w*\\()",
