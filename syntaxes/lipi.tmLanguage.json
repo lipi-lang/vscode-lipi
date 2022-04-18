@@ -92,15 +92,15 @@
     },
     "atom-number-custom-base": {
       "name": "constant.numeric.lipi",
-      "match": "(?<=^|[\\(\\[\\{\\s])(?<!%)~?#([box]|[[:digit:]]+)'[[:alnum:]][[:alnum:],]*(?=[\\s\\}\\]\\)])"
+      "match": "(?<=^|[\\(\\[\\{\\s])(?<!%)~?#([box]|[[:digit:]]+)'[[:alnum:]][[:alnum:],]*('e[+\\-]?[[:digit:]]+)?(?=[\\s\\}\\]\\)])"
     },
     "atom-number-default-base": {
       "name": "constant.numeric.lipi",
-      "match": "(?<=^|[\\(\\[\\{\\s])~?[[:digit:]][[:digit:],]*(?:\\.[[:digit:],]+)?(?=[\\s\\}\\]\\)])"
+      "match": "(?<=^|[\\(\\[\\{\\s])~?[[:digit:]][[:digit:],]*(?:\\.[[:digit:],]*)?('e[+\\-]?[[:digit:]]+)?(?=[\\s\\}\\]\\)])"
     },
     "atom-character": {
       "name": "string.other.lipi",
-      "match": "(?<=^|[\\(\\[\\{\\s])(\\\\{2}u\\{[[:alnum:]]*\\}|\\\\[^\\s\\}\\]\\)]+)(?=[\\s\\}\\]\\)])"
+      "match": "\\\\(?:\\\\(u\\{[[:alnum:]]*}|[^\\s\\}\\]\\)]+)|.(?=[\\s\\}\\]\\)]))"
     },
     "atom-string": {
       "patterns": [
@@ -140,7 +140,7 @@
       "patterns": [{ "include": "#atom-string-escape" }]
     },
     "atom-sexp": {
-      "begin": "(?<!')\\(\\s*(?:(->{1,2}|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|or|pragma|(?:import|use|using))(?=[\\s\\)])|(@?[\\.~!^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
+      "begin": "(?<!')\\(\\s*(?!:)(?:(->{1,2}|and|case|cond|declare|def[\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|modulus|or|range|(?:import|use|using)|(?:first|last)|(?:either|record|union))(?=[\\s\\)])|(@?[\\.~!^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}][\\.~!%^&*\\-=_+|\\\\:'<>\\/?\\p{L}\\p{Sm}\\p{Sc}\\p{M}\\p{N}]*))",
       "end": "\\)",
       "beginCaptures": {
         "1": { "name": "storage.type.lipi keyword.other.lipi" },
