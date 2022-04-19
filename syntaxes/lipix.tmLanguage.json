@@ -194,7 +194,8 @@
         { "include": "#expression-closure" },
         { "include": "#expression-function-invocation" },
         { "include": "#expression-if" },
-        { "include": "#expression-when" }
+        { "include": "#expression-when" },
+        { "include": "#expression-do-block" }
       ]
     },
     "expression-literal": {
@@ -314,6 +315,19 @@
         "2": { "name": "entity.name.function" }
       }
     },
+    "expression-if": {
+      "begin": "(?<=^|\\s)(if)(.*)(do)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "2": { "patterns": [{ "include": "#expression" }] },
+        "3": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#top-level" }]
+    },
     "expression-when": {
       "begin": "(?<=^|\\s)(when)(.*)(is)",
       "end": "(end)",
@@ -335,6 +349,17 @@
           }
         }
       ]
+    },
+    "expression-do-block": {
+      "begin": "(do)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#top-level" }]
     }
   },
   "scopeName": "source.lipi-extended"
