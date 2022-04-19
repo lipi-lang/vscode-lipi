@@ -16,14 +16,20 @@
     ["{", "}"],
     ["[", "]"],
     ["(", ")"],
-    ["\"", "\""],
-    ["\"\"\"", "\"\"\""]
+    { "open": "'", "close": "'", "notIn": ["string"] },
+    { "open": "b'", "close": "'", "notIn": ["string"] },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "f\"", "close": "\"", "notIn": ["comment", "string"] },
+    { "open": "r\"", "close": "\"", "notIn": ["comment", "string"] },
+    { "open": "%\"", "close": "\"%", "notIn": ["comment", "string"] },
+    { "open": "\"\"\"", "close": "\"\"\"", "notIn": ["comment", "string"] }
   ],
   // symbols that can be used to surround a selection
   "surroundingPairs": [
     ["{", "}"],
     ["[", "]"],
     ["(", ")"],
+    ["'", "'"],
     ["\"", "\""]
   ]
 }

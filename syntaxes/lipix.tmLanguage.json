@@ -6,7 +6,8 @@
     "comment": {
       "patterns": [
         { "include": "#comment-block" },
-        { "include": "#comment-line" }
+        { "include": "#comment-line" },
+        { "include": "#comment-doc" }
       ]
     },
     "comment-block": {
@@ -19,6 +20,11 @@
       "name": "comment.line.lipi",
       "begin": "#",
       "end": "\n"
+    },
+    "comment-doc": {
+      "name": "comment.block.lipi",
+      "begin": "@\"{3}",
+      "end": "\"{3}"
     },
     "common-pattern": {
       "patterns": [
@@ -99,6 +105,7 @@
     },
     "declaration": {
       "patterns": [
+        { "include": "#comment" },
         { "include": "#declaration-module" },
         { "include": "#declaration-type" },
         { "include": "#declaration-alias" },
@@ -193,10 +200,20 @@
     "expression-literal": {
       "patterns": [
         {
+          "type": "character literal expression",
+          "name": "string.other",
+          "match": "\\\\(?:\\\\(u\\{[[:alnum:]]*}|[^\\s\\}\\]\\)]+)|.(?=[\\s\\}\\]\\)]))"
+        },
+        {
           "type": "string literal expression",
-          "name": "string",
-          "begin": "(\")",
-          "end": "(\")"
+          "patterns": [
+            { "include": "#expression-literal-string-triple-raw" },
+            { "include": "#expression-literal-string-triple-format" },
+            { "include": "#expression-literal-string-triple-static" },
+            { "include": "#expression-literal-string-raw" },
+            { "include": "#expression-literal-string-format" },
+            { "include": "#expression-literal-string-static" }
+          ]
         },
         {
           "type": "atom literal expression",
@@ -208,6 +225,68 @@
           "name": "constant.numeric",
           "match": "(?<![[:alnum:]'._-])[0-9]+(?:\\.[0-9]+)?"
         }
+      ]
+    },
+    "expression-literal-string-escape": {
+      "name": "constant.character.escape",
+      "match": "(\\\\(?:x[A-Fa-f0-9]{2}|u{[A-fa-f0-9]{1,6}}|.|\\s))"
+    },
+    "expression-literal-string-interpolated-content": {
+      "begin": "(?<!{){(?!{)",
+      "end": "}(?:%[.<^>][[:digit:]]+)?",
+      "beginCaptures": {
+        "0": { "name": "constant.character.interpolation" }
+      },
+      "endCaptures": {
+        "0": { "name": "constant.character.interpolation" }
+      },
+      "contentName": "meta.embedded meta.embedded.line meta.template.expression",
+      "patterns": [{ "include": "#expression" }]
+    },
+    "expression-literal-string-triple-raw": {
+      "name": "string.quoted.triple.raw",
+      "begin": "r(%*)\"{3}",
+      "end": "\"{3}\\1"
+    },
+    "expression-literal-string-triple-format": {
+      "name": "string.quoted.triple.format",
+      "begin": "f(%*)\"{3}",
+      "end": "\"{3}\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-escape" },
+        { "include": "#expression-literal-string-interpolated-content" }
+      ]
+    },
+    "expression-literal-string-triple-static": {
+      "name": "string.quoted.triple",
+      "begin": "(%*)\"{3}",
+      "end": "\"{3}\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-escape" },
+        { "include": "#expression-literal-string-interpolated-content" }
+      ]
+    },
+    "expression-literal-string-raw": {
+      "name": "string.quoted.double.raw",
+      "begin": "r(%*)\"",
+      "end": "\"\\1"
+    },
+    "expression-literal-string-format": {
+      "name": "string.quoted.double.format",
+      "begin": "f(%*)\"",
+      "end": "\"\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-escape" },
+        { "include": "#expression-literal-string-interpolated-content" }
+      ]
+    },
+    "expression-literal-string-static": {
+      "name": "string.quoted.double",
+      "begin": "(%*)\"",
+      "end": "\"\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-escape" },
+        { "include": "#expression-literal-string-interpolated-content" }
       ]
     },
     "expression-closure": {
