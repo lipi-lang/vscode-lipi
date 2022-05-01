@@ -22,9 +22,18 @@
       "end": "\n"
     },
     "comment-doc": {
-      "name": "comment.block.lipi",
-      "begin": "@\"{3}",
-      "end": "\"{3}"
+      "patterns": [
+        {
+          "name": "comment.block.lipi",
+          "begin": "@(%*)\"{3}",
+          "end": "\"{3}\\1"
+        },
+        {
+          "name": "comment.block.lipi",
+          "begin": "@(%*)\"{1}",
+          "end": "\"{1}\\1"
+        }
+      ]
     },
     "common-pattern": {
       "patterns": [
@@ -92,7 +101,7 @@
       "patterns": [
         { "include": "#common-pattern" },
         {
-          "match": "(:)\\s*([[:alpha:]_][[:alnum:]'._-]*)",
+          "match": "(:{1,2})\\s*([[:alpha:]_][[:alnum:]'._-]*)",
           "captures": {
             "1": { "name": "keyword.operator" },
             "2": { "name": "entity.name.type" }
@@ -100,59 +109,206 @@
         }
       ]
     },
+    "common-when-clause": {
+      "match": "(?<=^|\\s)(when)(.+?)(?=do|,|=|->|$)",
+      "captures": {
+        "1": { "name": "keyword" },
+        "2": { "patterns": [{ "include": "#expression" }] }
+      }
+    },
+    "common-do-line": {
+      "begin": "(?<=^|\\s)(do:)",
+      "end": "\n",
+      "beginCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#expression" }]
+    },
+    "common-do-block": {
+      "begin": "(?<=^|\\s)(do)",
+      "end": "(?<=^|\\s)(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [{ "include": "#top-level" }]
+    },
     "top-level": {
       "patterns": [
         { "include": "#comment" },
         { "include": "#declaration" },
-        { "include": "#expression" }
+        { "include": "#expression" },
+        { "include": "#common-do-line" },
+        { "include": "#common-do-block" },
+        {
+          "match": "(:{1,2})\\s*([[:alpha:]_][[:alnum:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword.operator" },
+            "2": { "name": "entity.name.type" }
+          }
+        }
       ]
     },
     "declaration": {
       "patterns": [
+        { "include": "#declaration-require" },
         { "include": "#declaration-module" },
         { "include": "#declaration-type" },
         { "include": "#declaration-alias" },
         { "include": "#declaration-function" },
+        { "include": "#declaration-signature" },
         { "include": "#declaration-test" },
-        { "include": "#declaration-binding" }
+        { "--include": "#declaration-binding" }
+      ]
+    },
+    "declaration-require": {
+      "patterns": [
+        {
+          "match": "(?<=^|\\s)(require)\\s+([[:alpha:]_][[:alnum:]'._-]*)(?:\\s*,\\s*(exposing:)\\s*\\[(.*)\\])?",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.class" },
+            "3": { "name": "keyword" },
+            "4": {
+              "patterns": [
+                {
+                  "name": "entity.name.class",
+                  "match": "[[:alpha:]_][[:alnum:]'._-]*"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "(?<=^|\\s)(import)\\s+([[:alpha:]_][[:alnum:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.class" }
+          }
+        }
       ]
     },
     "declaration-module": {
-      "match": "(?<=^|\\s)(defmodule)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?",
-      "captures": {
-        "1": { "name": "keyword" },
-        "2": { "name": "entity.name.class" },
-        "3": { "name": "keyword.operator" }
-      }
+      "patterns": [
+        {
+          "match": "(?<=^|\\s)(def(?:class|module|instance|object|struct))\\s+([[:alpha:]_][[:alnum:]'._-]*)\\s*(\\*)?",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.class" },
+            "3": { "name": "keyword.operator" }
+          }
+        },
+        {
+          "match": "(?<=^|\\s)(class|module|instance|object|struct)\\s+([[:alpha:]_][[:alnum:]'._-]*)\\s*(\\*)?",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.class" },
+            "3": { "name": "keyword.operator" }
+          }
+        }
+      ]
     },
     "declaration-type": {
-      "match": "(?<=^|\\s)(deftype)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?\\s+(=)",
-      "captures": {
-        "1": { "name": "keyword" },
-        "2": { "name": "entity.name.type" },
-        "3": { "name": "keyword.operator" },
-        "4": { "name": "keyword" }
-      }
+      "patterns": [
+        {
+          "match": "(?<=^|\\s)(def(?:new|sub)?type)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?\\s+(=|:{2})",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.type" },
+            "3": { "name": "keyword.operator" },
+            "4": { "name": "keyword" }
+          }
+        },
+        {
+          "match": "(?<=^|\\s)((?:new|sub)?type)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.type" },
+            "3": { "name": "keyword.operator" }
+          }
+        }
+      ]
     },
     "declaration-alias": {
-      "match": "(?<=^|\\s)(defalias)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?\\s+(=)",
+      "patterns": [
+        {
+          "match": "(?<=^|\\s)(defalias)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?\\s+(=|:{2})",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.type" },
+            "3": { "name": "keyword.operator" },
+            "4": { "name": "keyword" }
+          }
+        },
+        {
+          "match": "(?<=^|\\s)(alias)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?",
+          "captures": {
+            "1": { "name": "keyword" },
+            "2": { "name": "entity.name.type" },
+            "3": { "name": "keyword.operator" }
+          }
+        }
+      ]
+    },
+    "--declaration-function": {
+      "match": "(?<=^|\\s)(def)\\s+([[:alpha:]_][[:alnum:].?!'_-]*)\\s*(\\*)?\\s*(\\(([^)]*)\\))?(\\s*(:{1,2})\\s*([[:alpha:]_][[:alnum:]'._-]*))?",
       "captures": {
         "1": { "name": "keyword" },
-        "2": { "name": "entity.name.type" },
+        "2": {
+          "name": "entity.name.function",
+          "patterns": [{ "name": "keyword", "match": "this\\." }]
+        },
         "3": { "name": "keyword.operator" },
-        "4": { "name": "keyword" }
+        "5": { "patterns": [{ "include": "#common-typed-param" }] },
+        "7": { "name": "keyword.operator" },
+        "8": { "name": "entity.name.type" }
       }
     },
     "declaration-function": {
-      "match": "(?<=^|\\s)(def)\\s+([[:alpha:]_][[:alnum:]'_-]*)\\s*(\\*)?\\s*(\\((.*)\\))(\\s*(:)\\s+([[:alpha:]_][[:alnum:]'._-]*))?",
+      "begin": "(?<=^|\\s)(def)\\s+([[:alpha:]_][[:alnum:].?!'_-]*)\\s*(\\*)?\\s*(\\(([^)]*)\\))?(\\s*(:{1,2})\\s*([[:alpha:]_][[:alnum:]'._-]*))?",
+      "end": "\n|(=)(?!=)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "2": {
+          "name": "entity.name.function",
+          "patterns": [{ "name": "keyword", "match": "this\\." }]
+        },
+        "3": { "name": "keyword.operator" },
+        "5": { "patterns": [{ "include": "#common-typed-param" }] },
+        "7": { "name": "keyword.operator" },
+        "8": { "name": "entity.name.type" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [
+        {
+          "match": "(?<!-)\\b(when)\\b(?!-)",
+          "captures": {
+            "1": { "name": "keyword" }
+          }
+        },
+        { "include": "#expression" }
+      ]
+    },
+    "declaration-signature": {
+      "match": "(?<=^|\\s)(sig)\\s+([[:alpha:]_][[:alnum:].?!'_-]*)\\s*(\\*)?\\s*(\\(([^)]*)\\))?(\\s*(:{1,2})\\s+([[:alpha:]_][[:alnum:]'._-]*))?",
       "captures": {
         "1": { "name": "keyword" },
         "2": { "name": "entity.name.function" },
         "3": { "name": "keyword.operator" },
-        "5": { "patterns": [{ "include": "#common-typed-param" }] },
+        "5": {
+          "patterns": [
+            {
+              "name": "entity.name.type",
+              "match": "[[:alpha:]_][[:alnum:].?!'_-]*"
+            }
+          ]
+        },
         "7": { "name": "keyword.operator" },
-        "8": { "name": "entity.name.type" },
-        "9": { "name": "keyword" }
+        "8": { "name": "entity.name.type" }
       }
     },
     "declaration-test": {
@@ -163,10 +319,10 @@
         "3": { "name": "keyword" }
       }
     },
-    "declaration-binding": {
+    "--declaration-binding": {
       "patterns": [
         {
-          "match": "^(?!.*(?:deftype|defalias).*)(.*)(=)(?=\\w|\\s)",
+          "match": "^(?!.*(?:case|def|defalias|defmodule|deftype|if|when).*)(.*)(=)(?=\\w|\\s)",
           "captures": {
             "1": { "patterns": [{ "include": "#common-pattern" }] },
             "2": { "name": "keyword.operator" }
@@ -176,13 +332,24 @@
     },
     "expression": {
       "patterns": [
+        { "include": "#expression-block" },
+        { "include": "#expression-operator" },
         { "include": "#expression-literal" },
         { "include": "#expression-closure" },
         { "include": "#expression-function-invocation" },
         { "include": "#expression-if" },
-        { "include": "#expression-case" },
-        { "include": "#expression-do-block" }
+        { "include": "#expression-case" }
       ]
+    },
+    "expression-block": {
+      "patterns": [
+        { "include": "#common-do-line" },
+        { "include": "#common-do-block" }
+      ]
+    },
+    "expression-operator": {
+      "name": "keyword",
+      "match": "(?<!\\w)([+\\-*\\/=<>|?!;]+|and|not|or|\\.)(?!\\w)"
     },
     "expression-literal": {
       "patterns": [
@@ -204,13 +371,21 @@
         },
         {
           "type": "atom literal expression",
-          "name": "keyword.control",
-          "match": ":[[:alpha:]][[:alnum:]'_-]*"
+          "patterns": [
+            {
+              "name": "keyword.control",
+              "match": "(?<!:):[[:alpha:]][[:alnum:]'_-]*"
+            },
+            {
+              "name": "keyword.control",
+              "match": "(?<!')'[[:alpha:]][[:alnum:]'_-]*"
+            }
+          ]
         },
         {
           "type": "number literal expression",
           "name": "constant.numeric",
-          "match": "(?<![[:alnum:]'._-])[0-9]+(?:\\.[0-9]+)?"
+          "match": "(?<![[:alnum:]'._-])[0-9][0-9_]*(?:\\.[0-9_]+)?"
         }
       ]
     },
@@ -219,16 +394,32 @@
       "match": "(\\\\(?:x[A-Fa-f0-9]{2}|u{[A-fa-f0-9]{1,6}}|.|\\s))"
     },
     "expression-literal-string-interpolated-content": {
-      "begin": "(?<!{){(?!{)",
-      "end": "}(?:%[.<^>][[:digit:]]+)?",
-      "beginCaptures": {
-        "0": { "name": "constant.character.interpolation" }
-      },
-      "endCaptures": {
-        "0": { "name": "constant.character.interpolation" }
-      },
-      "contentName": "meta.embedded meta.embedded.line meta.template.expression",
-      "patterns": [{ "include": "#expression" }]
+      "patterns": [
+        {
+          "begin": "(?<!{){(?!{)",
+          "end": "}(?:%[.<^>][[:digit:]]+)?",
+          "beginCaptures": {
+            "0": { "name": "constant.character.interpolation" }
+          },
+          "endCaptures": {
+            "0": { "name": "constant.character.interpolation" }
+          },
+          "contentName": "meta.embedded meta.embedded.line meta.template.expression",
+          "patterns": [{ "include": "#expression" }]
+        },
+        {
+          "begin": "(?<!\\\\)\\\\\\(",
+          "end": "\\)(?:%[.<^>][[:digit:]]+)?",
+          "beginCaptures": {
+            "0": { "name": "constant.character.interpolation" }
+          },
+          "endCaptures": {
+            "0": { "name": "constant.character.interpolation" }
+          },
+          "contentName": "meta.embedded meta.embedded.line meta.template.expression",
+          "patterns": [{ "include": "#expression" }]
+        }
+      ]
     },
     "expression-literal-string-triple-raw": {
       "name": "string.quoted.triple.raw",
@@ -240,8 +431,8 @@
       "begin": "f(%*)\"{3}",
       "end": "\"{3}\\1",
       "patterns": [
-        { "include": "#expression-literal-string-escape" },
-        { "include": "#expression-literal-string-interpolated-content" }
+        { "include": "#expression-literal-string-interpolated-content" },
+        { "include": "#expression-literal-string-escape" }
       ]
     },
     "expression-literal-string-triple-static": {
@@ -260,8 +451,8 @@
       "begin": "f(%*)\"",
       "end": "\"\\1",
       "patterns": [
-        { "include": "#expression-literal-string-escape" },
-        { "include": "#expression-literal-string-interpolated-content" }
+        { "include": "#expression-literal-string-interpolated-content" },
+        { "include": "#expression-literal-string-escape" }
       ]
     },
     "expression-literal-string-static": {
@@ -280,30 +471,28 @@
       }
     },
     "expression-function-invocation": {
-      "match": "((?:[[:alpha:]][[:alnum:]'_-]*\\.)+)?([[:alpha:]_][[:alnum:]'_-]*)(?=\\w*\\()",
-      "captures": {
-        "1": {
-          "name": "entity.name.class",
-          "patterns": [{ "name": "keyword.operator", "match": "\\." }]
+      "patterns": [
+        {
+          "match": "([A-Z_][[:alnum:].'_-]*)?(\\.)([a-z_][[:alnum:]'_-]*)",
+          "captures": {
+            "1": {
+              "name": "entity.name.class",
+              "patterns": [{ "name": "keyword.operator", "match": "\\." }]
+            },
+            "2": { "name": "keyword.operator" },
+            "3": { "name": "entity.name.function" }
+          }
         },
-        "2": { "name": "entity.name.function" }
-      }
+        {
+          "match": "([[:alpha:]_][[:alnum:]'_-]*)\\s*(?=\\()",
+          "captures": {
+            "1": { "name": "entity.name.function" }
+          }
+        }
+      ]
     },
     "expression-if": {
-      "begin": "(?<=^|\\s)(if)(.*)(do)",
-      "end": "(end)",
-      "beginCaptures": {
-        "1": { "name": "keyword" },
-        "2": { "patterns": [{ "include": "#expression" }] },
-        "3": { "name": "keyword" }
-      },
-      "endCaptures": {
-        "1": { "name": "keyword" }
-      },
-      "patterns": [{ "include": "#top-level" }]
-    },
-    "expression-case": {
-      "begin": "(?<=^|\\s)(case)(.*)(do)",
+      "begin": "(?<=^|\\s)(if)(.*)(do:?)",
       "end": "(end)",
       "beginCaptures": {
         "1": { "name": "keyword" },
@@ -315,25 +504,39 @@
       },
       "patterns": [
         {
-          "match": "(.*)(->)",
+          "match": "(?<!-)\\b(else(?::|\\b))(?!-)",
+          "captures": { "1": { "name": "keyword" } }
+        },
+        { "include": "#top-level" }
+      ]
+    },
+    "expression-case": {
+      "begin": "(?<!-)\\b(case)\\b(?!-)(.*)(?<!-)\\b(do(?::|\\b))(?!-)",
+      "end": "(end)",
+      "beginCaptures": {
+        "1": { "name": "keyword" },
+        "2": { "patterns": [{ "include": "#expression" }] },
+        "3": { "name": "keyword" }
+      },
+      "endCaptures": {
+        "1": { "name": "keyword" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        {
+          "match": "^(?!.*(?:#).*)(.*)(->)",
           "captures": {
-            "1": { "patterns": [{ "include": "#common-pattern" }] },
+            "1": {
+              "patterns": [
+                { "include": "#common-when-clause" },
+                { "include": "#common-pattern" }
+              ]
+            },
             "2": { "name": "keyword" }
           }
         },
         { "include": "#expression" }
       ]
-    },
-    "expression-do-block": {
-      "begin": "(do)",
-      "end": "(end)",
-      "beginCaptures": {
-        "1": { "name": "keyword" }
-      },
-      "endCaptures": {
-        "1": { "name": "keyword" }
-      },
-      "patterns": [{ "include": "#top-level" }]
     }
   },
   "scopeName": "source.lipi-extended"
