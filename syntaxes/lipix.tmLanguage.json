@@ -20,14 +20,14 @@
     },
     "comment-block": {
       "comment": "Block comment",
-      "name": "comment.block.lipi",
+      "name": "comment.block.lipi-extended",
       "begin": "#(%*)\\[",
       "end": "\\]\\1#",
       "patterns": [{ "include": "#comment-block" }]
     },
     "comment-line": {
       "comment": "Line comment",
-      "name": "comment.line.lipi",
+      "name": "comment.line.lipi-extended",
       "begin": "#",
       "end": "\n"
     },
@@ -35,13 +35,13 @@
       "patterns": [
         {
           "comment": "Documentation block comment",
-          "name": "comment.block.lipi",
+          "name": "comment.block.lipi-extended",
           "begin": "@(%*)\"{3}",
           "end": "\"{3}\\1"
         },
         {
           "comment": "Documentation line comment",
-          "name": "comment.block.lipi",
+          "name": "comment.block.lipi-extended",
           "begin": "@(%*)\"{1}",
           "end": "\"{1}\\1"
         }
@@ -49,13 +49,13 @@
     },
     "annotation": {
       "comment": "Annotation that may appear above some declarations",
-      "name": "entity.other.attribute-name",
+      "name": "entity.other.attribute-name.lipi-extended",
       "begin": "@\\[",
       "end": "\\]",
       "patterns": [{ "include": "#expression-literal" }]
     },
     "declaration": {
-      "patterns": [{ "include": "" }]
+      "patterns": [{ "include": "#declaration-module" }]
     },
     "declaration-module": {},
     "expression": {
@@ -64,21 +64,69 @@
     "expression-literal": {
       "patterns": [
         {
-          "type": "number literal expression",
-          "name": "constant.numeric",
+          "comment": "Number literal",
+          "name": "constant.numeric.lipi-extended",
           "match": "\\b(?<!-)[0-9][0-9_]*(?:\\.[0-9_]+)(?!-)\\b"
         },
         {
-          "type": "string literal expression",
+          "comment": "String literal",
           "patterns": [
             { "include": "#expression-literal-string-triple-raw" },
-            { "include": "#expression-literal-string-triple-format" },
-            { "include": "#expression-literal-string-triple-static" },
+            { "include": "#expression-literal-string-triple" },
             { "include": "#expression-literal-string-raw" },
-            { "include": "#expression-literal-string-format" },
-            { "include": "#expression-literal-string-static" }
+            { "include": "#expression-literal-string" }
           ]
         }
+      ]
+    },
+    "expression-literal-string-escape": {
+      "comment": "Escape sequence in string literals",
+      "name": "constant.character.escape.lipi-extended",
+      "match": "(\\\\(?:x[A-Fa-f0-9]{2}|u{[A-fa-f0-9]{1,6}}|.|\\s))"
+    },
+    "expression-literal-string-interpolated-content": {
+      "comment": "Interpolated content in string literals",
+      "begin": "(?<!\\\\)\\\\\\(",
+      "end": "\\)(?:%[.<^>][[:digit:]]+)?",
+      "beginCaptures": {
+        "0": { "name": "constant.character.interpolation.lipi-extended" }
+      },
+      "endCaptures": {
+        "0": { "name": "constant.character.interpolation.lipi-extended" }
+      },
+      "contentName": "meta.embedded meta.embedded.line meta.template.expression",
+      "patterns": [{ "include": "#expression" }]
+    },
+    "expression-literal-string-triple-raw": {
+      "comment": "Raw strings delimited with three pairs of double quotes",
+      "name": "string.quoted.triple.raw.lipi-extended",
+      "begin": "r(%*)\"{3}",
+      "end": "\"{3}\\1"
+    },
+    "expression-literal-string-triple": {
+      "comment": "Regular strings delimited with three pairs of double quotes",
+      "name": "string.quoted.triple.lipi-extended",
+      "begin": "(%*)\"{3}",
+      "end": "\"{3}\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-interpolated-content" },
+        { "include": "#expression-literal-string-escape" }
+      ]
+    },
+    "expression-literal-string-raw": {
+      "comment": "Raw strings delimited with one pair of double quotes",
+      "name": "string.quoted.double.raw.lipi-extended",
+      "begin": "r(%*)\"",
+      "end": "\"\\1"
+    },
+    "expression-literal-string": {
+      "comment": "Regular strings delimited with one pair of double quotes",
+      "name": "string.quoted.double.lipi-extended",
+      "begin": "(%*)\"",
+      "end": "\"\\1",
+      "patterns": [
+        { "include": "#expression-literal-string-interpolated-content" },
+        { "include": "#expression-literal-string-escape" }
       ]
     }
   },
