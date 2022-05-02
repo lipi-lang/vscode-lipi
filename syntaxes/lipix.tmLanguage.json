@@ -55,9 +55,25 @@
       "patterns": [{ "include": "#expression-literal" }]
     },
     "declaration": {
-      "patterns": [{ "include": "#declaration-module" }]
+      "patterns": [
+        { "include": "#declaration-import" },
+        { "include": "#declaration-module" }
+      ]
     },
-    "declaration-module": {},
+    "declaration-import": {
+      "match": "\\b(?<!-)(import)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+      "captures": {
+        "1": { "name": "keyword.lipi-extended" },
+        "2": { "name": "entity.name.class.lipi-extended" }
+      }
+    },
+    "declaration-module": {
+      "match": "\\b(?<!-)(module)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+      "captures": {
+        "1": { "name": "keyword.lipi-extended" },
+        "2": { "name": "entity.name.class.lipi-extended" }
+      }
+    },
     "expression": {
       "patterns": [{ "include": "#expression-literal" }]
     },
