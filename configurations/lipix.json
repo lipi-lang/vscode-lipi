@@ -17,8 +17,8 @@
     ["[", "]"],
     ["(", ")"],
     ["`", "`"],
-    // { "open": "'", "close": "'", "notIn": ["string"] },
     { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "c\"", "close": "\"", "notIn": ["comment", "string"] },
     { "open": "f\"", "close": "\"", "notIn": ["comment", "string"] },
     { "open": "r\"", "close": "\"", "notIn": ["comment", "string"] },
     { "open": "%\"", "close": "\"%", "notIn": ["comment", "string"] },
@@ -29,7 +29,6 @@
     ["{", "}"],
     ["[", "]"],
     ["(", ")"],
-    // ["'", "'"],
     ["`", "`"],
     ["\"", "\""]
   ]

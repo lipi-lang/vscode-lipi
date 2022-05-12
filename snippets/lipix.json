@@ -1,14 +1,10 @@
 {
-  "Function definition": {
-    "prefix": ["def"],
-    "body": ["def ${1:f}(${2:arg1::???})${3:::???} = do", "\t${0:???}", "end"]
-  },
   "Case clause": {
     "prefix": ["case"],
-    "body": ["case ${1:???} do", "\t${2:_} -> ${0:???}", "end"]
+    "body": ["case ${1:???} of", "\t${2:_} -> ${0:???}"]
   },
-  "Do-End block": {
+  "Do clause": {
     "prefix": ["do"],
-    "body": ["do", "\t${0:???}", "end"]
+    "body": ["do", "\t${0:???}"]
   }
 }

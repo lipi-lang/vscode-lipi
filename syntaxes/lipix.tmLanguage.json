@@ -6,6 +6,7 @@
     "top-level": {
       "patterns": [
         { "include": "#comment" },
+        { "include": "#common" },
         { "include": "#annotation" },
         { "include": "#declaration" },
         { "include": "#expression" }
@@ -47,6 +48,36 @@
         }
       ]
     },
+    "common": {
+      "patterns": [
+        {
+          "comment": "Structure keywords",
+          "match": "\\b(?<!-)(where)(?!-)\\b",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Control keywords",
+          "match": "\\b(?<!-)(and|case|else|do|if|handle|of|not|or|then|with)(?!-)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Operators",
+          "match": "(?<!\\w)([+\\-*\\/=$^&<>!?:|])(?!\\w)",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Lazy delimiter",
+          "match": "(['!])(?=\\w|[\\(\\{])",
+          "captures": { "1": { "name": "keyword.control.lipi-extended" } }
+        }
+      ]
+    },
     "annotation": {
       "comment": "Annotation that may appear above some declarations",
       "name": "entity.other.attribute-name.lipi-extended",
@@ -57,22 +88,51 @@
     "declaration": {
       "patterns": [
         { "include": "#declaration-import" },
-        { "include": "#declaration-module" }
+        { "include": "#declaration-structure" }
       ]
     },
     "declaration-import": {
       "match": "\\b(?<!-)(import)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
       "captures": {
-        "1": { "name": "keyword.lipi-extended" },
+        "1": { "name": "keyword.other.lipi-extended" },
         "2": { "name": "entity.name.class.lipi-extended" }
       }
     },
-    "declaration-module": {
-      "match": "\\b(?<!-)(module)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
-      "captures": {
-        "1": { "name": "keyword.lipi-extended" },
-        "2": { "name": "entity.name.class.lipi-extended" }
-      }
+    "declaration-structure": {
+      "patterns": [
+        {
+          "comment": "Module declaration",
+          "match": "\\b(?<!-)(module)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" },
+            "2": { "name": "entity.name.class.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Type class definition declaration",
+          "match": "\\b(?<!-)(class)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" },
+            "2": { "name": "entity.name.class.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Type class instance declaration",
+          "match": "\\b(?<!-)(instance)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" },
+            "2": { "name": "entity.name.class.lipi-extended" }
+          }
+        },
+        {
+          "comment": "Type declaration",
+          "match": "\\b(?<!-)(type)\\s+([[:alpha:]_][[:alpha:]'._-]*)",
+          "captures": {
+            "1": { "name": "keyword.other.lipi-extended" },
+            "2": { "name": "entity.name.class.lipi-extended" }
+          }
+        }
+      ]
     },
     "expression": {
       "patterns": [{ "include": "#expression-literal" }]
@@ -85,6 +145,15 @@
           "match": "\\b(?<!-)[0-9][0-9_]*(?:\\.[0-9_]+)(?!-)\\b"
         },
         {
+          "comment": "Character literal",
+          "name": "string.quoted.single.lipi-extended",
+          "begin": "b?c\"",
+          "end": "\"",
+          "patterns": [
+            { "include": "#expression-literal-string-escape-sequence" }
+          ]
+        },
+        {
           "comment": "String literal",
           "patterns": [
             { "include": "#expression-literal-string-triple-raw" },
@@ -95,7 +164,7 @@
         }
       ]
     },
-    "expression-literal-string-escape": {
+    "expression-literal-string-escape-sequence": {
       "comment": "Escape sequence in string literals",
       "name": "constant.character.escape.lipi-extended",
       "match": "(\\\\(?:x[A-Fa-f0-9]{2}|u{[A-fa-f0-9]{1,6}}|.|\\s))"
@@ -126,7 +195,7 @@
       "end": "\"{3}\\1",
       "patterns": [
         { "include": "#expression-literal-string-interpolated-content" },
-        { "include": "#expression-literal-string-escape" }
+        { "include": "#expression-literal-string-escape-sequence" }
       ]
     },
     "expression-literal-string-raw": {
@@ -142,7 +211,7 @@
       "end": "\"\\1",
       "patterns": [
         { "include": "#expression-literal-string-interpolated-content" },
-        { "include": "#expression-literal-string-escape" }
+        { "include": "#expression-literal-string-escape-sequence" }
       ]
     }
   },
