@@ -3,7 +3,7 @@
   "displayName": "Lipi",
   "publisher": "lipi-lang",
   "description": "Lipi language support for Visual Studio Code",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "main": "./out/extension",
   "engines": {
@@ -15,8 +15,7 @@
     "Snippets"
   ],
   "activationEvents": [
-    "onLanguage:lipi",
-    "onLanguage:lipi-extended"
+    "onLanguage:lipi"
   ],
   "contributes": {
     "languages": [
@@ -32,15 +31,7 @@
         "configuration": "./configurations/lipi.json"
       },
       {
-        "id": "lipi-extended",
-        "aliases": [
-          "Lipi Extended",
-          "lipi extended"
-        ],
-        "extensions": [
-          ".lipix"
-        ],
-        "configuration": "./configurations/lipix.json"
+        "id": "lipi-codeblock"
       }
     ],
     "grammars": [
@@ -50,19 +41,20 @@
         "path": "./syntaxes/lipi.tmLanguage.json"
       },
       {
-        "language": "lipi-extended",
-        "scopeName": "source.lipi-extended",
-        "path": "./syntaxes/lipix.tmLanguage.json"
+        "scopeName": "markdown.lipi.codeblock",
+        "path": "./syntax/lipi.codeblock.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.lipi": "lipi"
+        }
       }
     ],
     "snippets": [
       {
         "language": "lipi",
         "path": "./snippets/lipi.json"
-      },
-      {
-        "language": "lipi-extended",
-        "path": "./snippets/lipix.json"
       }
     ]
   },
