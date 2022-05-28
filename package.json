@@ -28,10 +28,7 @@
         "extensions": [
           ".lipi"
         ],
-        "configuration": "./configurations/lipi.json"
-      },
-      {
-        "id": "lipi-codeblock"
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
@@ -42,7 +39,7 @@
       },
       {
         "scopeName": "markdown.lipi.codeblock",
-        "path": "./syntax/lipi.codeblock.tmLanguage.json",
+        "path": "./syntaxes/lipi.codeblock.tmLanguage.json",
         "injectTo": [
           "text.html.markdown"
         ],
@@ -70,7 +67,7 @@
   "devDependencies": {
     "@types/vscode": "^1.64.0",
     "@types/which": "^2.0.1",
-    "prettier": "^2.5.1",
+    "prettier": "2.6.2",
     "typescript": "^4.5.5"
   }
 }
