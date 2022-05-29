@@ -16,7 +16,9 @@
     "**/node_modules": true
   },
   "prettier.prettierPath": "./node_modules/prettier/index.js",
-  "search.exclude": { "**/node_modules": true },
+  "search.exclude": {
+    "**/node_modules": true
+  },
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "./node_modules/typescript/lib"
 }

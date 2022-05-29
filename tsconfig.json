@@ -3,12 +3,11 @@
     "baseUrl": "src",
     "lib": ["es2021"],
     "module": "commonjs",
-    "outDir": "out",
+    "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,
     "strict": true,
     "target": "es2021"
   },
-  "include": ["src"],
-  "exclude": []
+  "include": ["src"]
 }

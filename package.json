@@ -5,7 +5,7 @@
   "description": "Lipi language support for Visual Studio Code",
   "version": "0.2.0",
   "license": "Apache-2.0",
-  "main": "./out/extension",
+  "main": "./dist/extension",
   "engines": {
     "vscode": "^1.64.0"
   },
@@ -56,9 +56,11 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm build",
-    "build": "tsc -b",
-    "watch": "tsc -b -w"
+    "build:grammar": "pnpm js-yaml syntaxes/lipi.tmLanguage.yaml > syntaxes/lipi.tmLanguage.json",
+    "build:extension": "tsc -b",
+    "build": "pnpm build:grammar && pnpm build:extension",
+    "watch": "pnpm build:grammar && tsc -b -w",
+    "vscode:prepublish": "pnpm build"
   },
   "dependencies": {
     "vscode-languageclient": "^7.0.0",
@@ -67,7 +69,9 @@
   "devDependencies": {
     "@types/vscode": "^1.64.0",
     "@types/which": "^2.0.1",
+    "js-yaml": "^4.1.0",
     "prettier": "2.6.2",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "vscode-tmgrammar-test": "^0.1.1"
   }
 }

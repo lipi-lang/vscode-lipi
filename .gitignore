@@ -1,4 +1,7 @@
 # Project
 *.vsix
 node_modules
-out
+dist
+
+# Generated JSON files
+syntaxes/lipi.tmLanguage.json
