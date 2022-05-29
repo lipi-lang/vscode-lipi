@@ -60,6 +60,7 @@
     "build:extension": "tsc -b",
     "build": "pnpm build:grammar && pnpm build:extension",
     "watch": "pnpm build:grammar && tsc -b -w",
+    "test": "pnpm vscode-tmgrammar-test test/grammar/**/*.lipi",
     "vscode:prepublish": "pnpm build"
   },
   "dependencies": {

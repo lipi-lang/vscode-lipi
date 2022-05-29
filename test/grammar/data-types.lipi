@@ -1,0 +1,179 @@
+; SYNTAX TEST "source.lipi"
+
+;;; Atoms
+
+;; VALID atoms
+
+  :apple
+; ^^^^^^ source.lipi entity.name.tag.lipi
+
+  :hello!-world?-123
+; ^^^^^^^^^^^^^^^^^^ source.lipi entity.name.tag.lipi
+
+;;; Numbers
+
+;; VALID integer number literals
+
+  0
+; ^ source.lipi constant.numeric.lipi
+  10
+; ^^ source.lipi constant.numeric.lipi
+  999
+; ^^^ source.lipi constant.numeric.lipi
+  ~999
+; ^^^^ source.lipi constant.numeric.lipi
+  0000001
+; ^^^^^^^ source.lipi constant.numeric.lipi
+  ~0000001
+; ^^^^^^^^ source.lipi constant.numeric.lipi
+
+  1_234_567_890
+; ^^^^^^^^^^^^^ source.lipi constant.numeric.lipi
+  ~1_234_567_890
+; ^^^^^^^^^^^^^^ source.lipi constant.numeric.lipi
+
+  #2'101
+; ^^^^^^ source.lipi constant.numeric.lipi
+  #16'1f
+; ^^^^^^ source.lipi constant.numeric.lipi
+  #16'4865_316f_774f_6c64
+; ^^^^^^^^^^^^^^^^^^^^^^^ source.lipi constant.numeric.lipi
+
+;; VALID float number literals
+
+  2.3
+; ^^^ source.lipi constant.numeric.lipi
+  2.3'e3
+; ^^^^^^ source.lipi constant.numeric.lipi
+  2.3'e+3
+; ^^^^^^^ source.lipi constant.numeric.lipi
+  2.3'e-3
+; ^^^^^^^ source.lipi constant.numeric.lipi
+  1_234.333_333
+; ^^^^^^^^^^^^^ source.lipi constant.numeric.lipi
+
+;;; Characters
+
+;; VALID character literals
+
+  \a
+; ^^ source.lipi string.quoted.single.lipi
+  \A
+; ^^ source.lipi string.quoted.single.lipi
+  \0
+; ^^ source.lipi string.quoted.single.lipi
+  \-
+; ^^ source.lipi string.quoted.single.lipi
+  \?
+; ^^ source.lipi string.quoted.single.lipi
+  \å
+; ^^ source.lipi string.quoted.single.lipi
+  \한
+; ^^ source.lipi string.quoted.single.lipi
+
+;; VALID character literals with escape sequences
+
+  \\n
+; ^^^ source.lipi string.quoted.single.lipi
+  \\s
+; ^^^ source.lipi string.quoted.single.lipi
+  \\t
+; ^^^ source.lipi string.quoted.single.lipi
+  \\f
+; ^^^ source.lipi string.quoted.single.lipi
+  \\b
+; ^^^ source.lipi string.quoted.single.lipi
+  \\r
+; ^^^ source.lipi string.quoted.single.lipi
+
+;; VALID Unicode scalar values
+
+  \\u{0}
+; ^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{00}
+; ^^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{deadbeef}
+; ^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{deaf_beef}
+; ^^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{d_e_a_f_b_e_e_f}
+; ^^^^^^^^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+
+;; INVALID character literals
+
+  \foo
+; ^^^^ source.lipi string.quoted.single.lipi
+  \bar-baz
+; ^^^^^^^^ source.lipi string.quoted.single.lipi
+  \1234549
+; ^^^^^^^^ source.lipi string.quoted.single.lipi
+
+;; INVALID character literals with INVALID escape sequences
+
+  \\foo
+; ^^^^^ source.lipi string.quoted.single.lipi
+  \\bar-baz
+; ^^^^^^^^^ source.lipi string.quoted.single.lipi
+  \\1234549
+; ^^^^^^^^^ source.lipi string.quoted.single.lipi
+
+;; INVALID Unicode scalar values
+
+  \\u{}
+; ^^^^^ source.lipi string.quoted.single.lipi
+  \\u{z}
+; ^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{z}
+; ^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{zyxwvuts}
+; ^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{zyxw_vuts}
+; ^^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+  \\u{z_y_x_w_v_u_t_s}
+; ^^^^^^^^^^^^^^^^^^^^ source.lipi string.quoted.single.lipi
+
+;;; Strings
+
+;; VALID double-quoted strings
+
+  ""
+; ^^ source.lipi string.quoted.double.lipi
+  "a"
+; ^^^ source.lipi string.quoted.double.lipi
+  "abc"
+; ^^^^^ source.lipi string.quoted.double.lipi
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.lipi string.quoted.double.lipi
+
+;; VALID double-quoted strings with VALID escape sequences
+
+  "\"a\"b\"c\""
+; ^^^^^^^^^^^^^ source.lipi string.quoted.double.lipi
+;  ^^ source.lipi constant.character.escape.lipi
+;     ^^ source.lipi constant.character.escape.lipi
+;        ^^ source.lipi constant.character.escape.lipi
+;           ^^ source.lipi constant.character.escape.lipi
+  "abc\ndef\r\nghi"
+;     ^^ source.lipi constant.character.escape.lipi
+;          ^^ source.lipi constant.character.escape.lipi
+;            ^^ source.lipi constant.character.escape.lipi
+  "abc\u{00}def\u{abcdef}ghi"
+;     ^^^^^^ source.lipi constant.character.escape.lipi
+;              ^^^^^^^^^^ source.lipi constant.character.escape.lipi
+
+;; VALID double-quoted string with INVALID escape sequences
+
+  "\?"
+;  ^^ source.lipi constant.character.escape.lipi
+  "\한"
+;  ^^ source.lipi constant.character.escape.lipi
+  "\~\~\~"
+;  ^^ source.lipi constant.character.escape.lipi
+;    ^^ source.lipi constant.character.escape.lipi
+;      ^^ source.lipi constant.character.escape.lipi
+  "\u{}\u{z}\u{zyxwvuts}\u{zyxw_vuts}\u{z_y_x_w_v_u_t_s}"
+;  ^^^^ source.lipi constant.character.escape.lipi
+;      ^^^^^ source.lipi constant.character.escape.lipi
+;           ^^^^^^^^^^^^ source.lipi constant.character.escape.lipi
+;                       ^^^^^^^^^^^^^ source.lipi constant.character.escape.lipi
+;                                    ^^^^^^^^^^^^^^^^^^^ source.lipi constant.character.escape.lipi
