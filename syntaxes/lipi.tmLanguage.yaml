@@ -5,6 +5,7 @@ scopeName: source.lipi
 
 patterns:
   - include: '#comment'
+  - include: '#annotation'
   - include: '#atom'
 
 repository:
@@ -12,25 +13,32 @@ repository:
   # COMMENTS
   # --------
 
+  # A span of text ignored by the reader (the compiler will still keep them in
+  # the syntax tree).
   comment:
     patterns:
       - include: '#comment-shebang'
       - include: '#comment-line'
       - include: '#comment-block'
 
-  # Shebang interpreter directives
+  # The shebang interpreter directive - it must begin at the first column of
+  # the line. It should also appear in the very first line of the file, but we
+  # don't want to enforce that here.
   comment-shebang:
     name: comment.line.lipi
     begin: ^#!
     end: \n
 
-  # Line comments
+  # A line comment - everything from the semicolon (`;`) to the end of the line
+  # is ignored.
   comment-line:
     name: comment.line.lipi
     begin: ;
     end: \n
 
-  # Block comments that may be nested
+  # A block comment - an s-expression preceded by `#_` and allows nested block
+  # comments. Block comments are true comments and thus whatever is inside is
+  # not validated by the compiler.
   comment-block:
     name: comment.block.lipi
     begin: '#_(%*)\('
@@ -38,11 +46,42 @@ repository:
     patterns:
       - include: '#comment-block'
 
+  # -----------
+  # ANNOTATIONS
+  # -----------
+
+  # Metadata to annotate the syntax tree itself.
+  annotation:
+    patterns:
+      - include: '#annotation-identifier'
+      - include: '#annotation-parenthesis'
+
+  # A nested s-expression in an annotation.
+  annotation-nested:
+    patterns:
+      - begin: \(
+        end: \)
+        patterns:
+          - include: '#annotation-nested'
+
+  # A caret (`^`) followed by a valid identifier.
+  annotation-identifier:
+    name: entity.name.type.lipi
+    match: (?<=^|[(\[\{\s])\^(?:[[:alpha:]!$?*\-=_+<>.?][\/[:alnum:]!$?*\-=_+<>.?]*)(?=[,\s\}\]\)])
+
+  # A caret (`^`) followed by an s-expression.
+  annotation-parenthesis:
+    name: entity.name.type.lipi
+    begin: (?<=^|[\[\{\s])\^\(
+    end: \)
+    patterns:
+      - include: '#annotation-nested'
+
   # -----
   # ATOMS
   # -----
 
-  # The smallest divisible element in a Lipi program
+  # The smallest divisible element in a Lipi program.
   atom:
     patterns:
       - include: '#atom-keyword'
@@ -51,27 +90,29 @@ repository:
       - include: '#atom-string'
       - include: '#atom-sexp'
 
-  # A symbolic identifier that evaluates to itself
+  # A symbolic identifier that evaluates to itself.
   atom-keyword:
     name: entity.name.tag.lipi
     match: (?<=^|[(\[\{\s]):{1,2}([[:alpha:]!$?*\-=_+<>.?][\/[:alnum:]!$?*\-=_+<>.?]*)(?=[,\s\}\]\)])
 
-  # A numeric literal representing an integer or float
+  # A numeric literal representing an integer or float.
   atom-number:
     patterns:
-      # A number literal with custom base
+      # A number literal with custom base.
+      # TODO: Should we accept the decimal point?
       - name: constant.numeric.lipi
         match: (?<=^|[(\[\{\s])~?(#(?:3[0-6]|[12][0-9]|[2-9])')([0-9A-Za-z_]+)('?[Ee](?:-|\+?)[[:digit:]]+)?(?=[,\s\}\]\)])
 
-      # A number literal with default decimal base
+      # A regular number literal in the default decimal base.
       - name: constant.numeric.lipi
         match: (?<=^|[(\[\{\s])~?[[:digit:]][[:digit:]_]*(?:\.[[:digit:]_]+)?('?[Ee](?:-|\+?)[[:digit:]]+)?(?=[,\s\}\]\)])
 
-  # A sequence of characters that represent a Unicode code point
+  # A character literal.
   atom-character:
     name: string.other.lipi
     match: (?<=^|[(\[\{\s])\\(\\(u{[[:alnum:]]*}|[^\s\}\]\)]+)|.)(?=[,\s\}\]\)])
 
+  # A string literal.
   atom-string:
     patterns:
       - include: '#atom-string-triple-raw'
@@ -79,28 +120,48 @@ repository:
       - include: '#atom-string-double-raw'
       - include: '#atom-string-double-static'
 
+  # A sequence of characters to represent a escape literal.
+  atom-string-escape:
+    match: \\(?:[0bfnrst\s\n\\]|x[a-fA-F0-9]{2}|u\{[a-fA-F0-9]{2,6}\}|(.))
+    captures:
+      '0': { name: constant.character.escape.lipi }
+      '1': { name: invalid.lipi }
+
+  # A string literal surrounded by THREE pairs of quotation marks (`"`) and
+  # preceded by the pound sign (`#`). Escape sequences are ignored.
   atom-string-triple-raw:
     name: string.quoted.triple.lipi
     begin: '#"{3}'
     end: '"{3}'
 
+  # A string literal surrounded by THREE pairs of quotation marks (`"`). It
+  # accepts escape sequences.
   atom-string-triple-static:
     name: string.quoted.triple.lipi
     begin: '"{3}'
     end: '"{3}'
+    patterns:
+      - include: '#atom-string-escape'
 
+  # A string literal surrounded by ONE pair of quotation marks (`"`) and
+  # preceded by the pound sign (`#`). Escape sequences are ignored.
   atom-string-double-raw:
     name: string.quoted.double.lipi
     begin: '#"{1}'
     end: '"{1}'
 
+  # A string literal surrounded by ONE pair of quotation marks (`"`). It accepts
+  # escape sequences.
   atom-string-double-static:
     name: string.quoted.double.lipi
     begin: '"{1}'
     end: '"{1}'
+    patterns:
+      - include: '#atom-string-escape'
 
+  # An s-expression where the first atom may be a function or a builtin keyword.
   atom-sexp:
-    begin: (?<!')\(\s*(?!:)(?:(->{1,2}|and|case|cond|declare|def[\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|modulus|or|range|(?:import|use|using)|(?:first|last)|(?:either|record|union))(?=[\s\)])|(@?[\.~!^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}][\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*))
+    begin: (?<!')\(\s*(?!:)(?:(->{1,2}|and|case|cond|declare|def[\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|modulus|or|range|sig|the|(?:import|use|using)|(?:first|last)|(?:either|record|union))(?=[\s\)])|(@?[\.~!^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}][\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*))
     end: \)
     beginCaptures:
       '1': { name: 'storage.type.lipi keyword.other.lipi' }
