@@ -1,0 +1,41 @@
+; SYNTAX TEST "source.lipi"
+
+;; VALID integer number literals
+
+  0
+; ^ constant.numeric.lipi
+  10
+; ^^ constant.numeric.lipi
+  999
+; ^^^ constant.numeric.lipi
+  ~999
+; ^^^^ constant.numeric.lipi
+  0000001
+; ^^^^^^^ constant.numeric.lipi
+  ~0000001
+; ^^^^^^^^ constant.numeric.lipi
+
+  1_234_567_890
+; ^^^^^^^^^^^^^ constant.numeric.lipi
+  ~1_234_567_890
+; ^^^^^^^^^^^^^^ constant.numeric.lipi
+
+  #2'101
+; ^^^^^^ constant.numeric.lipi
+  #16'1f
+; ^^^^^^ constant.numeric.lipi
+  #16'4865_316f_774f_6c64
+; ^^^^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID float number literals
+
+  2.3
+; ^^^ constant.numeric.lipi
+  2.3'e3
+; ^^^^^^ constant.numeric.lipi
+  2.3'e+3
+; ^^^^^^^ constant.numeric.lipi
+  2.3'e-3
+; ^^^^^^^ constant.numeric.lipi
+  1_234.333_333
+; ^^^^^^^^^^^^^ constant.numeric.lipi

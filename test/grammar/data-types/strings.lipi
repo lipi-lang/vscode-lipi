@@ -1,0 +1,87 @@
+; SYNTAX TEST "source.lipi"
+
+;; VALID double-quoted strings
+
+  ""
+; ^^ string.quoted.double.lipi
+  "a"
+; ^^^ string.quoted.double.lipi
+  "abc"
+; ^^^^^ string.quoted.double.lipi
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.lipi
+
+;; VALID double-quoted strings with VALID escape sequences
+
+  "\"a\"b\"c\""
+; ^^^^^^^^^^^^^ string.quoted.double.lipi
+;  ^^ constant.character.escape.lipi
+;     ^^ constant.character.escape.lipi
+;        ^^ constant.character.escape.lipi
+;           ^^ constant.character.escape.lipi
+  "abc\ndef\r\nghi"
+;     ^^ constant.character.escape.lipi
+;          ^^ constant.character.escape.lipi
+;            ^^ constant.character.escape.lipi
+  "abc\u{00}def\u{abcdef}ghi"
+;     ^^^^^^ constant.character.escape.lipi
+;              ^^^^^^^^^^ constant.character.escape.lipi
+
+;; VALID double-quoted strings with INVALID escape sequences
+
+  "\?"
+;  ^^ constant.character.escape.lipi
+  "\한"
+;  ^^ constant.character.escape.lipi
+  "\~\~\~"
+;  ^^ constant.character.escape.lipi
+;    ^^ constant.character.escape.lipi
+;      ^^ constant.character.escape.lipi
+  "\u{}\u{z}\u{zyxwvuts}\u{zyxw_vuts}\u{z_y_x_w_v_u_t_s}"
+;  ^^^^ constant.character.escape.lipi
+;      ^^^^^ constant.character.escape.lipi
+;           ^^^^^^^^^^^^ constant.character.escape.lipi
+;                       ^^^^^^^^^^^^^ constant.character.escape.lipi
+;                                    ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+
+;; VALID triple-quoted strings
+
+  """"""
+; ^^^^^^ string.quoted.triple.lipi
+  """a"""
+; ^^^^^^^ string.quoted.triple.lipi
+  """abc"""
+; ^^^^^^^^^ string.quoted.triple.lipi
+  """Lorem "ipsum" dolor sit amet, "consectetur adipiscing elit", sed do eiusmod"""
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.triple.lipi
+
+;; VALID triple-quoted strings with VALID escape sequences
+
+  """\"a"b"c\""""
+; ^^^^^^^^^^^^^^^ string.quoted.triple.lipi
+;    ^^ constant.character.escape.lipi
+;           ^^ constant.character.escape.lipi
+  """abc\ndef\r\nghi"""
+;       ^^ constant.character.escape.lipi
+;            ^^ constant.character.escape.lipi
+;              ^^ constant.character.escape.lipi
+  """abc\u{00}def\u{abcdef}ghi"""
+;       ^^^^^^ constant.character.escape.lipi
+;                ^^^^^^^^^^ constant.character.escape.lipi
+
+;; VALID triple-quoted strings with INVALID escape sequences
+
+  """\?"""
+;    ^^ constant.character.escape.lipi
+  """\한"""
+;    ^^ constant.character.escape.lipi
+  """\~\~\~"""
+;    ^^ constant.character.escape.lipi
+;      ^^ constant.character.escape.lipi
+;        ^^ constant.character.escape.lipi
+  """\u{}\u{z}\u{zyxwvuts}\u{zyxw_vuts}\u{z_y_x_w_v_u_t_s}"""
+;    ^^^^ constant.character.escape.lipi
+;        ^^^^^ constant.character.escape.lipi
+;             ^^^^^^^^^^^^ constant.character.escape.lipi
+;                         ^^^^^^^^^^^^^ constant.character.escape.lipi
+;                                      ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi

@@ -1,0 +1,79 @@
+; SYNTAX TEST "source.lipi"
+
+;; VALID character literals
+
+  \a
+; ^^ string.quoted.single.lipi
+  \A
+; ^^ string.quoted.single.lipi
+  \0
+; ^^ string.quoted.single.lipi
+  \-
+; ^^ string.quoted.single.lipi
+  \?
+; ^^ string.quoted.single.lipi
+  \å
+; ^^ string.quoted.single.lipi
+  \한
+; ^^ string.quoted.single.lipi
+
+;; VALID character literals with escape sequences
+
+  \\n
+; ^^^ string.quoted.single.lipi
+  \\s
+; ^^^ string.quoted.single.lipi
+  \\t
+; ^^^ string.quoted.single.lipi
+  \\f
+; ^^^ string.quoted.single.lipi
+  \\b
+; ^^^ string.quoted.single.lipi
+  \\r
+; ^^^ string.quoted.single.lipi
+
+;; VALID Unicode scalar values
+
+  \\u{0}
+; ^^^^^^ string.quoted.single.lipi
+  \\u{00}
+; ^^^^^^^ string.quoted.single.lipi
+  \\u{deadbeef}
+; ^^^^^^^^^^^^^ string.quoted.single.lipi
+  \\u{deaf_beef}
+; ^^^^^^^^^^^^^^ string.quoted.single.lipi
+  \\u{d_e_a_f_b_e_e_f}
+; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
+
+;; INVALID character literals
+
+  \foo
+; ^^^^ string.quoted.single.lipi
+  \bar-baz
+; ^^^^^^^^ string.quoted.single.lipi
+  \1234549
+; ^^^^^^^^ string.quoted.single.lipi
+
+;; INVALID character literals with INVALID escape sequences
+
+  \\foo
+; ^^^^^ string.quoted.single.lipi
+  \\bar-baz
+; ^^^^^^^^^ string.quoted.single.lipi
+  \\1234549
+; ^^^^^^^^^ string.quoted.single.lipi
+
+;; INVALID Unicode scalar values
+
+  \\u{}
+; ^^^^^ string.quoted.single.lipi
+  \\u{z}
+; ^^^^^^ string.quoted.single.lipi
+  \\u{z}
+; ^^^^^^ string.quoted.single.lipi
+  \\u{zyxwvuts}
+; ^^^^^^^^^^^^^ string.quoted.single.lipi
+  \\u{zyxw_vuts}
+; ^^^^^^^^^^^^^^ string.quoted.single.lipi
+  \\u{z_y_x_w_v_u_t_s}
+; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
