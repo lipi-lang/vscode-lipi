@@ -1,0 +1,134 @@
+; SYNTAX TEST "source.lipi"
+
+;; VALID keywords
+
+  :a
+; ^^ entity.name.tag.lipi
+  :apple
+; ^^^^^^ entity.name.tag.lipi
+  :helloWORLD
+; ^^^^^^^^^^^ entity.name.tag.lipi
+  :HELLO-world-123
+; ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+  :-123:456:789:000-
+; ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+  :! :? :* :- := :_ :+ :'
+; ^^ entity.name.tag.lipi
+;    ^^ entity.name.tag.lipi
+;       ^^ entity.name.tag.lipi
+;          ^^ entity.name.tag.lipi
+;             ^^ entity.name.tag.lipi
+;                ^^ entity.name.tag.lipi
+;                   ^^ entity.name.tag.lipi
+;                      ^^ entity.name.tag.lipi
+
+;; VALID keywords in parenthesis, brackets and braces
+
+  (:a :apple :HELLO-world-123 :-123:456:789:000-)
+;  ^^ entity.name.tag.lipi
+;     ^^^^^^ entity.name.tag.lipi
+;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+  [:a :apple :HELLO-world-123 :-123:456:789:000-]
+;  ^^ entity.name.tag.lipi
+;     ^^^^^^ entity.name.tag.lipi
+;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+  {:a :apple :HELLO-world-123 :-123:456:789:000-}
+;  ^^ entity.name.tag.lipi
+;     ^^^^^^ entity.name.tag.lipi
+;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+  ((:a) [[:apple] {{:HELLO-world-123} ([{:-123:456:789:000-}])}])
+;   ^^ entity.name.tag.lipi
+;         ^^^^^^ entity.name.tag.lipi
+;                   ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;                                        ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+
+;; VALID keywords with Unicode code points
+
+  :åçéîñøœßü
+; ^^^^^^^^^^ entity.name.tag.lipi
+  :njerëzore
+; ^^^^^^^^^^ entity.name.tag.lipi
+  :čovjek
+; ^^^^^^^ entity.name.tag.lipi
+  :člověk
+; ^^^^^^^ entity.name.tag.lipi
+  :بشري
+; ^^^^^ entity.name.tag.lipi
+  :ሰው
+; ^^^ entity.name.tag.lipi
+  :մարդ
+; ^^^^^ entity.name.tag.lipi
+  :মানব
+; ^^^^ entity.name.tag.lipi
+  :人的
+; ^^^ entity.name.tag.lipi
+  :человек
+; ^^^^^^^^ entity.name.tag.lipi
+  :मानव
+; ^^^^ entity.name.tag.lipi
+  :ადამიანური
+; ^^^^^^^^^^^ entity.name.tag.lipi
+  :άνθρωπος
+; ^^^^^^^^^ entity.name.tag.lipi
+  :માનવ
+; ^^^^ entity.name.tag.lipi
+  :אנוש
+; ^^^^^ entity.name.tag.lipi
+  :ヒューマン
+; ^^^^^^ entity.name.tag.lipi
+  :ಮಾನವ
+; ^^^^ entity.name.tag.lipi
+  :មនុស្ស
+; ^^^^^ entity.name.tag.lipi
+  :인간
+; ^^^ entity.name.tag.lipi
+  :ມະນຸດ
+; ^^^^^ entity.name.tag.lipi
+  :മനുഷ്യൻ
+; ^^^^^^ entity.name.tag.lipi
+  :လူ့
+; ^^ entity.name.tag.lipi
+  :ମାନବ
+; ^^^^ entity.name.tag.lipi
+  :มนุษย์
+; ^^^^^ entity.name.tag.lipi
+
+;; INVALID keywords
+
+  :0
+; ^^ - entity.name.tag.lipi
+  :1234
+; ^^^^^ - entity.name.tag.lipi
+  :, :. :~ :@ :# :$ :% :^ :& :| :/ :\ :( :) :[ :] :{ :}
+; ^^ - entity.name.tag.lipi
+;    ^^ - entity.name.tag.lipi
+;       ^^ - entity.name.tag.lipi
+;          ^^ - entity.name.tag.lipi
+;             ^^ - entity.name.tag.lipi
+;                ^^ - entity.name.tag.lipi
+;                   ^^ - entity.name.tag.lipi
+;                      ^^ - entity.name.tag.lipi
+;                         ^^ - entity.name.tag.lipi
+;                            ^^ - entity.name.tag.lipi
+;                               ^^ - entity.name.tag.lipi
+;                                  ^^ - entity.name.tag.lipi
+;                                     ^^ - entity.name.tag.lipi
+;                                        ^^ - entity.name.tag.lipi
+;                                           ^^ - entity.name.tag.lipi
+;                                              ^^ - entity.name.tag.lipi
+;                                                 ^^ - entity.name.tag.lipi
+;                                                    ^^ - entity.name.tag.lipi
+
+  -:a
+;  ^^ - entity.name.tag.lipi
+  #:-
+;  ^^ - entity.name.tag.lipi
+  ;:-
+;  ^^ - entity.name.tag.lipi
+  \:a
+;  ^^ - entity.name.tag.lipi
+  ":a"
+;  ^^ - entity.name.tag.lipi

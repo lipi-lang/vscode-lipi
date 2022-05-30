@@ -85,3 +85,28 @@
 ;             ^^^^^^^^^^^^ constant.character.escape.lipi
 ;                         ^^^^^^^^^^^^^ constant.character.escape.lipi
 ;                                      ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+
+  """
+; ^^^ string.quoted.triple.lipi
+  Lorem "ipsum" dolor sit amet,
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.triple.lipi
+  "consectetur adipiscing elit",
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.triple.lipi
+  sed do eiusmod.
+; ^^^^^^^^^^^^^^^ string.quoted.triple.lipi
+  """
+; ^^^ string.quoted.triple.lipi
+
+  """
+  Lorem\s"ipsum"\bdolor\rsit\namet,
+;      ^^ constant.character.escape.lipi
+;               ^^ constant.character.escape.lipi
+;                      ^^ constant.character.escape.lipi
+;                           ^^ constant.character.escape.lipi
+  "consectetur\u{aabbcc}adipiscing\u{ff}elit",
+;             ^^^^^^^^^^ constant.character.escape.lipi
+;                                 ^^^^^^ constant.character.escape.lipi
+  sed \d\o eiusmod.
+;     ^^ constant.character.escape.lipi
+;       ^^ constant.character.escape.lipi
+  """

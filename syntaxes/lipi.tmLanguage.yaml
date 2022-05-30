@@ -7,6 +7,7 @@ patterns:
   - include: '#comment'
   - include: '#annotation'
   - include: '#atom'
+  - include: '#sexp'
 
 repository:
   # --------
@@ -88,12 +89,14 @@ repository:
       - include: '#atom-number'
       - include: '#atom-character'
       - include: '#atom-string'
-      - include: '#atom-sexp'
 
   # A symbolic identifier that evaluates to itself.
   atom-keyword:
     name: entity.name.tag.lipi
-    match: (?<=^|[,\s\(\[\{]):{1,2}([[:alpha:]!$?*\-=_+<>.?][\/[:alnum:]!$?*\-=_+<>.?]*)(?=$|[,\s\)\]\}])
+    # The syntax highlighter should be as lenient as possible where it makes
+    # sense, and thus we won't check if a keyword only contains valid symbols.
+    # That is instead the responsibility of the compiler and linter.
+    match: (?<=^|[,\s\(\[\{]):{1,2}[\p{L}\-=+*'?!<>_][^,\s\)\]\}]*
 
   # A numeric literal representing an integer or float.
   atom-number:
@@ -158,7 +161,7 @@ repository:
       - include: '#atom-string-escape'
 
   # An s-expression where the first atom may be a function or a builtin keyword.
-  atom-sexp:
+  sexp:
     begin: (?<!')\(\s*(?!:)(?:(->{1,2}|and|case|cond|declare|def[\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|modulus|or|range|sig|the|(?:import|use|using)|(?:first|last)|(?:either|record|union))(?=[\s\)])|(@?[\.~!^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}][\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*))
     end: \)
     beginCaptures:

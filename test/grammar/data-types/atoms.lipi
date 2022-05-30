@@ -1,9 +1,0 @@
-; SYNTAX TEST "source.lipi"
-
-;; VALID atoms
-
-  :apple
-; ^^^^^^ entity.name.tag.lipi
-
-  :hello!-world?-123
-; ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
