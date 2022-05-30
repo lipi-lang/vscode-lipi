@@ -91,8 +91,8 @@
 ; ^^^^^^^^^^^^^ string.quoted.single.lipi
 ;  ^^^^^^^^^^^^ constant.character.escape.lipi
   \\u{zyxw_vuts}
-;  ^^^^^^^^^^^^^ constant.character.escape.lipi
 ; ^^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^^ constant.character.escape.lipi
   \\u{z_y_x_w_v_u_t_s}
 ; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
 ;  ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
