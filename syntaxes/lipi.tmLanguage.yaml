@@ -93,9 +93,11 @@ repository:
   # A symbolic identifier that evaluates to itself.
   atom-keyword:
     name: entity.name.tag.lipi
-    # The syntax highlighter should be as lenient as possible where it makes
-    # sense, and thus we won't check if a keyword only contains valid symbols.
-    # That is instead the responsibility of the compiler and linter.
+    # The syntax highlighter should be as lenient as possible, so we won't
+    # validate the characters of the keyword here. That should be the
+    # responsibility of the compiler and linter. As long as the keyword starts
+    # with a certain symbol or any kind of letter from any language, we'll match
+    # until a comma, space or a closing parenthesis/bracket/brace.
     match: (?<=^|[,\s\(\[\{]):{1,2}[\p{L}\-=+*'?!<>_][^,\s\)\]\}]*
 
   # A numeric literal representing an integer or float.
@@ -112,8 +114,11 @@ repository:
 
   # A character literal.
   atom-character:
-    name: string.quoted.single.lipi
-    match: (?<=^|[,\s(\[\{])\\((\\u\{[^\}]*\})|([^,\s\)\]\}]*))
+    match: (?<=^|[,\s(\[\{])\\(?:(\\u\{[^\}]*\})|(\\[^,\s\)\]\}]+)|[^,\s\)\]\}]*)
+    captures:
+      '0': { name: string.quoted.single.lipi }
+      '1': { name: constant.character.escape.lipi }
+      '2': { name: constant.character.escape.lipi }
 
   # A string literal.
   atom-string:

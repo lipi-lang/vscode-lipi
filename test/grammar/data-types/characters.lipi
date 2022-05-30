@@ -3,77 +3,96 @@
 ;; VALID character literals
 
   \a
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \A
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \0
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \-
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \?
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \å
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
   \한
-; ^^ string.quoted.single.lipi
+; ^^ string.quoted.single.lipi - constant.character.escape.lipi
 
 ;; VALID character literals with escape sequences
 
+  \\\
+; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
+  \\b
+; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
+  \\f
+; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
   \\n
+; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
+  \\r
 ; ^^^ string.quoted.single.lipi
   \\s
 ; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
   \\t
 ; ^^^ string.quoted.single.lipi
-  \\f
-; ^^^ string.quoted.single.lipi
-  \\b
-; ^^^ string.quoted.single.lipi
-  \\r
-; ^^^ string.quoted.single.lipi
+;  ^^ constant.character.escape.lipi
 
 ;; VALID Unicode scalar values
 
   \\u{0}
 ; ^^^^^^ string.quoted.single.lipi
+;  ^^^^^ constant.character.escape.lipi
   \\u{00}
 ; ^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^ constant.character.escape.lipi
   \\u{deadbeef}
 ; ^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^ constant.character.escape.lipi
   \\u{deaf_beef}
 ; ^^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^^ constant.character.escape.lipi
   \\u{d_e_a_f_b_e_e_f}
 ; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
 
 ;; INVALID character literals
 
   \foo
-; ^^^^ string.quoted.single.lipi
+; ^^^^ string.quoted.single.lipi - constant.character.escape.lipi
   \bar-baz
-; ^^^^^^^^ string.quoted.single.lipi
+; ^^^^^^^^ string.quoted.single.lipi - constant.character.escape.lipi
   \1234549
-; ^^^^^^^^ string.quoted.single.lipi
+; ^^^^^^^^ string.quoted.single.lipi - constant.character.escape.lipi
 
 ;; INVALID character literals with INVALID escape sequences
 
   \\foo
 ; ^^^^^ string.quoted.single.lipi
+;  ^^^^ constant.character.escape.lipi
   \\bar-baz
 ; ^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^ constant.character.escape.lipi
   \\1234549
 ; ^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^ constant.character.escape.lipi
 
 ;; INVALID Unicode scalar values
 
   \\u{}
 ; ^^^^^ string.quoted.single.lipi
+;  ^^^^ constant.character.escape.lipi
   \\u{z}
 ; ^^^^^^ string.quoted.single.lipi
-  \\u{z}
-; ^^^^^^ string.quoted.single.lipi
+;  ^^^^^ constant.character.escape.lipi
   \\u{zyxwvuts}
 ; ^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^ constant.character.escape.lipi
   \\u{zyxw_vuts}
+;  ^^^^^^^^^^^^^ constant.character.escape.lipi
 ; ^^^^^^^^^^^^^^ string.quoted.single.lipi
   \\u{z_y_x_w_v_u_t_s}
 ; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
+;  ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi

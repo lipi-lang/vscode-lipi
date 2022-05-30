@@ -13,37 +13,19 @@
   :-123:456:789:000-
 ; ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
   :! :? :* :- := :_ :+ :'
-; ^^ entity.name.tag.lipi
-;    ^^ entity.name.tag.lipi
-;       ^^ entity.name.tag.lipi
-;          ^^ entity.name.tag.lipi
-;             ^^ entity.name.tag.lipi
-;                ^^ entity.name.tag.lipi
-;                   ^^ entity.name.tag.lipi
-;                      ^^ entity.name.tag.lipi
+; ^^ ^^ ^^ ^^ ^^ ^^ ^^ ^^ entity.name.tag.lipi
+;   ^  ^  ^  ^  ^  ^  ^  ^ - entity.name.tag.lipi
 
 ;; VALID keywords in parenthesis, brackets and braces
 
   (:a :apple :HELLO-world-123 :-123:456:789:000-)
-;  ^^ entity.name.tag.lipi
-;     ^^^^^^ entity.name.tag.lipi
-;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
-;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
   [:a :apple :HELLO-world-123 :-123:456:789:000-]
-;  ^^ entity.name.tag.lipi
-;     ^^^^^^ entity.name.tag.lipi
-;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
-;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
   {:a :apple :HELLO-world-123 :-123:456:789:000-}
-;  ^^ entity.name.tag.lipi
-;     ^^^^^^ entity.name.tag.lipi
-;            ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
-;                             ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
   ((:a) [[:apple] {{:HELLO-world-123} ([{:-123:456:789:000-}])}])
-;   ^^ entity.name.tag.lipi
-;         ^^^^^^ entity.name.tag.lipi
-;                   ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
-;                                        ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;   ^^    ^^^^^^    ^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
 
 ;; VALID keywords with Unicode code points
 
@@ -103,24 +85,7 @@
   :1234
 ; ^^^^^ - entity.name.tag.lipi
   :, :. :~ :@ :# :$ :% :^ :& :| :/ :\ :( :) :[ :] :{ :}
-; ^^ - entity.name.tag.lipi
-;    ^^ - entity.name.tag.lipi
-;       ^^ - entity.name.tag.lipi
-;          ^^ - entity.name.tag.lipi
-;             ^^ - entity.name.tag.lipi
-;                ^^ - entity.name.tag.lipi
-;                   ^^ - entity.name.tag.lipi
-;                      ^^ - entity.name.tag.lipi
-;                         ^^ - entity.name.tag.lipi
-;                            ^^ - entity.name.tag.lipi
-;                               ^^ - entity.name.tag.lipi
-;                                  ^^ - entity.name.tag.lipi
-;                                     ^^ - entity.name.tag.lipi
-;                                        ^^ - entity.name.tag.lipi
-;                                           ^^ - entity.name.tag.lipi
-;                                              ^^ - entity.name.tag.lipi
-;                                                 ^^ - entity.name.tag.lipi
-;                                                    ^^ - entity.name.tag.lipi
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi
 
   -:a
 ;  ^^ - entity.name.tag.lipi

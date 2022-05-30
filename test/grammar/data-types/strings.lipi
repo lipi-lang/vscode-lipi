@@ -13,8 +13,18 @@
 
 ;; VALID double-quoted strings with VALID escape sequences
 
+  "\\\b\f\n\r\s\t\""
+; ^^^^^^^^^^^^^^ string.quoted.double.lipi
+;  ^^ constant.character.escape.lipi
+;    ^^ constant.character.escape.lipi
+;      ^^ constant.character.escape.lipi
+;        ^^ constant.character.escape.lipi
+;          ^^ constant.character.escape.lipi
+;            ^^ constant.character.escape.lipi
+;              ^^ constant.character.escape.lipi
+;                ^^ constant.character.escape.lipi
+;  ^^ constant.character.escape.lipi
   "\"a\"b\"c\""
-; ^^^^^^^^^^^^^ string.quoted.double.lipi
 ;  ^^ constant.character.escape.lipi
 ;     ^^ constant.character.escape.lipi
 ;        ^^ constant.character.escape.lipi
@@ -43,6 +53,32 @@
 ;           ^^^^^^^^^^^^ constant.character.escape.lipi
 ;                       ^^^^^^^^^^^^^ constant.character.escape.lipi
 ;                                    ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+
+;; VALID raw double-quoted strings
+
+  #""
+; ^^^ string.quoted.double.lipi
+  #"a"
+; ^^^^ string.quoted.double.lipi
+  #"abc"
+; ^^^^^^ string.quoted.double.lipi
+  #"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.lipi
+
+;; VALID double-quoted strings with ignored escape sequences
+
+  #"\"a\"b\"c\""
+; ^^^^  ^^^^^^^^ string.quoted.double.lipi
+;     ^^ source.lipi - string.quoted.double.lipi
+;         ^^ constant.character.escape.lipi
+;            ^^ constant.character.escape.lipi
+  #"abc\ndef\r\nghi"
+;      ^^ - constant.character.escape.lipi
+;           ^^ - constant.character.escape.lipi
+;             ^^ - constant.character.escape.lipi
+  #"abc\u{00}def\u{abcdef}ghi"
+;      ^^^^^^ - constant.character.escape.lipi
+;               ^^^^^^^^^^ - constant.character.escape.lipi
 
 ;; VALID triple-quoted strings
 
@@ -86,6 +122,8 @@
 ;                         ^^^^^^^^^^^^^ constant.character.escape.lipi
 ;                                      ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
 
+;; VALID triple-quoted string that spans multiple lines
+
   """
 ; ^^^ string.quoted.triple.lipi
   Lorem "ipsum" dolor sit amet,
@@ -97,6 +135,8 @@
   """
 ; ^^^ string.quoted.triple.lipi
 
+;; VALID triple-quoted string, with VALID escape sequences, that spans multiple lines
+
   """
   Lorem\s"ipsum"\bdolor\rsit\namet,
 ;      ^^ constant.character.escape.lipi
@@ -106,6 +146,22 @@
   "consectetur\u{aabbcc}adipiscing\u{ff}elit",
 ;             ^^^^^^^^^^ constant.character.escape.lipi
 ;                                 ^^^^^^ constant.character.escape.lipi
+  sed\"do\"eiusmod.
+;    ^^ constant.character.escape.lipi
+;        ^^ constant.character.escape.lipi
+  """
+
+;; VALID triple-quoted string, with INVALID escape sequences, that spans multiple lines
+
+  """
+  Lorem\q"ipsum"\wdolor\esit\yamet,
+;      ^^ constant.character.escape.lipi
+;               ^^ constant.character.escape.lipi
+;                      ^^ constant.character.escape.lipi
+;                           ^^ constant.character.escape.lipi
+  "consectetur\u{zzzzzz}adipiscing\u{}elit",
+;             ^^^^^^^^^^ constant.character.escape.lipi
+;                                 ^^^^ constant.character.escape.lipi
   sed \d\o eiusmod.
 ;     ^^ constant.character.escape.lipi
 ;       ^^ constant.character.escape.lipi
