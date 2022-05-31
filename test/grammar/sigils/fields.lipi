@@ -1,0 +1,32 @@
+; SYNTAX TEST "source.lipi"
+
+;; VALID fields in record forms
+
+  #{}
+; ^^^ - entity.name.tag.lipi
+  #{~a ~b ~c}
+;   ^^ ^^ ^^ entity.name.tag.lipi
+; ^^  ^  ^  ^ - entity.name.tag.lipi
+  #{~a 1.0 ~b 2.0 ~c 4.0}
+;   ^^     ^^     ^^ entity.name.tag.lipi
+; ^^  ^^^^^  ^^^^^  ^^^^^ - entity.name.tag.lipi
+  #{~ant 1.0 ~bat-cat 2.0 ~dog/ewe/fox 3.0}
+;   ^^^^     ^^^^^^^^     ^^^^^^^^^^^^ entity.name.tag.lipi
+  #{~+- 1.0 ~=_ 2.0 ~?! 3.0}
+;   ^^^     ^^^     ^^^ entity.name.tag.lipi
+
+  [#{~a 0.0 ~b 1.1 ~c 2.2} (foo #{~d 3.3 ~e 4.4 ~f 5.5})]
+;    ^^     ^^     ^^             ^^     ^^     ^^ entity.name.tag.lipi
+  [#{~ant 0.0 ~bat 1.1 ~cat 2.2} (foo #{~dog 3.3 ~ewe 4.4 ~fox 5.5})]
+;    ^^^^     ^^^^     ^^^^             ^^^^     ^^^^     ^^^^ entity.name.tag.lipi
+
+;; INVALID fields in non-record forms
+
+  ~a ~bat ~cat-dog ~ewe/fox
+; ^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi
+  (~a ~bat ~cat-dog ~ewe/fox)
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi
+  [~a ~bat ~cat-dog ~ewe/fox]
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi
+  {~a ~bat ~cat-dog ~ewe/fox}
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi

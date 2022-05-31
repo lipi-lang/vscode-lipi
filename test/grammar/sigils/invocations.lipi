@@ -1,0 +1,13 @@
+; SYNTAX TEST "source.lipi"
+
+  (f)
+;  ^ entity.name.function.lipi
+  (f x)
+;  ^ entity.name.function.lipi
+  (f x y)
+;  ^ entity.name.function.lipi
+
+  (f x (g))
+;  ^    ^ entity.name.function.lipi
+  (f x (g y))
+;  ^    ^ entity.name.function.lipi
