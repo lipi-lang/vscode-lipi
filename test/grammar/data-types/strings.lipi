@@ -40,12 +40,9 @@
 ;  ^^ constant.character.escape.lipi
 ;    ^^ constant.character.escape.lipi
 ;      ^^ constant.character.escape.lipi
-  "\u{}\u{z}\u{zyxwvuts}\u{zyxw_vuts}\u{z_y_x_w_v_u_t_s}"
-;  ^^^^ constant.character.escape.lipi
-;      ^^^^^ constant.character.escape.lipi
-;           ^^^^^^^^^^^^ constant.character.escape.lipi
-;                       ^^^^^^^^^^^^^ constant.character.escape.lipi
-;                                    ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+  "\u{} \u{z} \u{zyxwvuts} \u{zyxw_vuts} \u{z_y_x_w_v_u_t_s}"
+;  ^^^^ ^^^^^ ^^^^^^^^^^^^ ^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+;      ^     ^            ^             ^ - constant.character.escape.lipi
 
 ;; VALID raw double-quoted strings
 
@@ -102,12 +99,9 @@
 ;    ^^ constant.character.escape.lipi
 ;      ^^ constant.character.escape.lipi
 ;        ^^ constant.character.escape.lipi
-  """\u{}\u{z}\u{zyxwvuts}\u{zyxw_vuts}\u{z_y_x_w_v_u_t_s}"""
-;    ^^^^ constant.character.escape.lipi
-;        ^^^^^ constant.character.escape.lipi
-;             ^^^^^^^^^^^^ constant.character.escape.lipi
-;                         ^^^^^^^^^^^^^ constant.character.escape.lipi
-;                                      ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+  """\u{} \u{z} \u{zyxwvuts} \u{zyxw_vuts} \u{z_y_x_w_v_u_t_s}"""
+;    ^^^^ ^^^^^ ^^^^^^^^^^^^ ^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
+;        ^     ^            ^             ^ - constant.character.escape.lipi
 
 ;; VALID triple-quoted string that spans multiple lines
 

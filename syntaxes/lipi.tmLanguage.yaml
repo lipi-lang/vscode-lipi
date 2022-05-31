@@ -6,8 +6,8 @@ scopeName: source.lipi
 patterns:
   - include: '#comment'
   - include: '#annotation'
+  - include: '#collection'
   - include: '#atom'
-  - include: '#sexp'
 
 repository:
   # --------
@@ -37,9 +37,9 @@ repository:
     begin: ;
     end: \n
 
-  # A block comment - an s-expression preceded by `#_` and allows nested block
-  # comments. Block comments are true comments and thus whatever is inside is
-  # not validated by the compiler.
+  # A block comment - an S-expression preceded by `#_` and allows nested block
+  # comments. Block comments are true comments in the sense that whatever is
+  # inside is NOT validated by the compiler or linter.
   comment-block:
     name: comment.block.lipi
     begin: '#_(%*)\('
@@ -55,34 +55,128 @@ repository:
   annotation:
     patterns:
       - include: '#annotation-identifier'
-      - include: '#annotation-parenthesis'
-
-  # A nested s-expression in an annotation.
-  annotation-nested:
-    patterns:
-      - begin: \(
-        end: \)
-        patterns:
-          - include: '#annotation-nested'
+      - include: '#annotation-sexp'
 
   # A caret (`^`) followed by a valid identifier.
   annotation-identifier:
     name: entity.name.type.lipi
-    match: (?<=^|[,\s\(\[\{])\^(?:[[:alpha:]!$?*\-=_+<>.?][\/[:alnum:]!$?*\-=_+<>.?]*)(?=$|[,\s\)\]\}])
+    match: (?<=^|[,\s\(\[\{])\^[\p{L}\-=+*'?!<>_][^,\s\)\]\}]*
 
-  # A caret (`^`) followed by an s-expression.
-  annotation-parenthesis:
+  # A caret (`^`) followed by an S-expression.
+  annotation-sexp:
     name: entity.name.type.lipi
     begin: (?<=^|[\[\{\s])\^\(
     end: \)
     patterns:
-      - include: '#annotation-nested'
+      - include: '#annotation-sexp-nested'
+
+  # A nested S-expression in an annotation.
+  annotation-sexp-nested:
+    patterns:
+      - begin: \(
+        end: \)
+        patterns:
+          - include: '#annotation-sexp-nested'
+
+  # ------
+  # SIGILS
+  # ------
+
+  # Only appears in anonymous function forms (S-expressions preceded by the
+  # pound symbol).
+  sigil-anonymous-parameter:
+    name: keyword.other.lipi
+    match: '(?<=^|[,\s\(\[\{])%(&|[0-9]+)?(?=$|[,\s\)\]\}])'
+
+  # Only appears in record forms.
+  sigil-field:
+    name: entity.name.tag.lipi
+    match: (?<=^|[,\s\(\[\{])~[\p{L}\-=+*'?!<>_][^,\s\)\]\}]*
+
+  # Only appears in vector, record and tuple forms.
+  sigil-rest:
+    name: entity.name.tag.lipi
+    match: "(?<=^|[,\\s\\(\\[\\{])&[\\p{L}\\-=+*'?!<>_][^,\\s\\)\\]\\}]*"
+
+  # Only appears in unquoted list forms.
+  sigil-call:
+    patterns:
+      # Invoking language built-ins
+      - match: (?<=\()\s*(->{1,2}|and|case|cond|declare|def[^,\s\)\]\}]*|forall|fn|if|let|or|the|use)(?=$|[,\s\)\]\}])
+        captures:
+          '1': { name: 'support.function.lipi keyword.other.lipi' }
+      # Invoking user-defined and external functions and macros
+      - match: (?<=\()\s*(@?[\p{L}\/\-=+*'?!<>_][^\s\)]*)
+        captures:
+          '1': { name: entity.name.function.lipi }
+
+  # -----------
+  # COLLECTIONS
+  # -----------
+
+  # A series of juxtaposed forms (atoms and nested collections) separated by
+  # whitespace and/or commas and surrounded by an opening and closing pair of
+  # delimiters.
+  collection:
+    patterns:
+      - include: '#collection-list'
+      - include: '#collection-vector'
+      - include: '#collection-record'
+      - include: '#collection-tuple'
+
+  # A series of forms surrounded by an opening and closing pair of parenthesis.
+  collection-list:
+    patterns:
+      # A quoted list
+      - begin: "'\\("
+        end: \)
+        patterns:
+          - include: '$self'
+      # An anonymous function call
+      - begin: '#\('
+        end: \)
+        patterns:
+          - include: '#sigil-anonymous-parameter'
+          - include: '#sigil-call'
+          - include: '$self'
+      # A normal list
+      - begin: \(
+        end: \)
+        patterns:
+          - include: '#sigil-call'
+          - include: '$self'
+
+  # A series of forms surrounded by an opening and closing pair of brackets.
+  collection-vector:
+    begin: \[
+    end: \]
+    patterns:
+      - include: '#sigil-rest'
+      - include: '$self'
+
+  # A series of forms surrounded by an opening and closing pair of braces and
+  # preceded by the pound symbol.
+  collection-record:
+    begin: '#{'
+    end: '}'
+    patterns:
+      - include: '#sigil-field'
+      - include: '#sigil-rest'
+      - include: '$self'
+
+  # A series of forms surrounded by an opening and closing pair of braces.
+  collection-tuple:
+    begin: '{'
+    end: '}'
+    patterns:
+      - include: '#sigil-rest'
+      - include: '$self'
 
   # -----
   # ATOMS
   # -----
 
-  # The smallest divisible element in a Lipi program.
+  # The smallest, indivisible element in a Lipi program.
   atom:
     patterns:
       - include: '#atom-keyword'
@@ -92,25 +186,26 @@ repository:
 
   # A symbolic identifier that evaluates to itself.
   atom-keyword:
-    name: entity.name.tag.lipi
+    name: constant.language.lipi
     # The syntax highlighter should be as lenient as possible, so we won't
     # validate the characters of the keyword here. That should be the
     # responsibility of the compiler and linter. As long as the keyword starts
-    # with a certain symbol or any kind of letter from any language, we'll match
-    # until a comma, space or a closing parenthesis/bracket/brace.
+    # with a colon (`:`), followed by a certain symbol or any kind of letter
+    # from any language, we'll match until we see a comma, whitespace or closing
+    # parenthesis/bracket/brace.
     match: (?<=^|[,\s\(\[\{]):{1,2}[\p{L}\-=+*'?!<>_][^,\s\)\]\}]*
 
   # A numeric literal representing an integer or float.
   atom-number:
     patterns:
-      # A number literal with custom base.
-      # TODO: Should we accept the decimal point?
+      # A number literal in a custom base.
+      # TODO: Should we match the decimal point?
       - name: constant.numeric.lipi
-        match: (?<=^|[,\s\(\[\{])~?(#(?:3[0-6]|[12][0-9]|[2-9])')([0-9A-Za-z_]+)('?[Ee](?:-|\+?)[[:digit:]]+)?(?=$|[,\s\)\]\}])
+        match: (?<=^|[,\s\(\[\{])-?(#(?:3[0-6]|[12][0-9]|[2-9])')([0-9A-Za-z_]+)('?[Ee](?:-|\+?)[0-9]+)?(?=$|[,\s\)\]\}])
 
       # A regular number literal in the default decimal base.
       - name: constant.numeric.lipi
-        match: (?<=^|[,\s\(\[\{])~?[[:digit:]][[:digit:]_]*(?:\.[[:digit:]_]+)?('?[Ee](?:-|\+?)[[:digit:]]+)?(?=$|[,\s\)\]\}])
+        match: (?<=^|[,\s\(\[\{])-?[0-9][0-9_]*(?:\.[0-9_]+)?('?[Ee](?:-|\+?)[0-9]+)?(?=$|[,\s\)\]\}])
 
   # A character literal.
   atom-character:
@@ -124,11 +219,11 @@ repository:
   atom-string:
     patterns:
       - include: '#atom-string-triple-raw'
-      - include: '#atom-string-triple-static'
+      - include: '#atom-string-triple'
       - include: '#atom-string-double-raw'
-      - include: '#atom-string-double-static'
+      - include: '#atom-string-double'
 
-  # A sequence of characters to represent a escape literal in a string literal.
+  # A series of characters to represent an escape sequence in a string literal.
   atom-string-escape:
     name: constant.character.escape.lipi
     match: \\((u\{[^\}]*\})|.)
@@ -142,7 +237,7 @@ repository:
 
   # A string literal surrounded by THREE pairs of quotation marks (`"`). It
   # accepts escape sequences.
-  atom-string-triple-static:
+  atom-string-triple:
     name: string.quoted.triple.lipi
     begin: '"{3}'
     end: '"{3}'
@@ -158,19 +253,9 @@ repository:
 
   # A string literal surrounded by ONE pair of quotation marks (`"`). It accepts
   # escape sequences.
-  atom-string-double-static:
+  atom-string-double:
     name: string.quoted.double.lipi
     begin: '"{1}'
     end: '"{1}'
     patterns:
       - include: '#atom-string-escape'
-
-  # An s-expression where the first atom may be a function or a builtin keyword.
-  sexp:
-    begin: (?<!')\(\s*(?!:)(?:(->{1,2}|and|case|cond|declare|def[\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*|derives|do|forall|fn|if(?:-let)?|let|modulus|or|range|sig|the|(?:import|use|using)|(?:first|last)|(?:either|record|union))(?=[\s\)])|(@?[\.~!^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}][\.~!%^&*\-=_+|\\:'<>\/?\p{L}\p{Sm}\p{Sc}\p{M}\p{N}]*))
-    end: \)
-    beginCaptures:
-      '1': { name: 'storage.type.lipi keyword.other.lipi' }
-      '2': { name: entity.name.function.lipi }
-    patterns:
-      - include: $self

@@ -1,6 +1,6 @@
 ; SYNTAX TEST "source.lipi"
 
-;; VALID integer number literals
+;; VALID integer number literals in base 10
 
   0
 ; ^ constant.numeric.lipi
@@ -8,18 +8,56 @@
 ; ^^ constant.numeric.lipi
   999
 ; ^^^ constant.numeric.lipi
-  ~999
-; ^^^^ constant.numeric.lipi
   0000001
 ; ^^^^^^^ constant.numeric.lipi
-  ~0000001
-; ^^^^^^^^ constant.numeric.lipi
-
   1_234_567_890
 ; ^^^^^^^^^^^^^ constant.numeric.lipi
-  ~1_234_567_890
-; ^^^^^^^^^^^^^^ constant.numeric.lipi
 
+;; VALID integer number literals in base 10 with exponent
+
+  0e1
+; ^^^ constant.numeric.lipi
+  10e+12
+; ^^^^^^ constant.numeric.lipi
+  999e+123
+; ^^^^^^^^ constant.numeric.lipi
+  0000001e9
+; ^^^^^^^^^ constant.numeric.lipi
+  1_234_567_890'e+987
+; ^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative integer number literals in base 10
+
+  -0
+; ^^ constant.numeric.lipi
+  -10
+; ^^^ constant.numeric.lipi
+  -999
+; ^^^^ constant.numeric.lipi
+  -0000001
+; ^^^^^^^^^^ constant.numeric.lipi
+  -1_234_567_890
+; ^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative integer number literals in base 10 with exponent
+
+  -0e1
+; ^^^^ constant.numeric.lipi
+  -10e+12
+; ^^^^^^^ constant.numeric.lipi
+  -999e+123
+; ^^^^^^^^^ constant.numeric.lipi
+  -0000001e9
+; ^^^^^^^^^^ constant.numeric.lipi
+  -1_234_567_890'e+987
+; ^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID integer number literals in custom base
+
+  #2'0
+; ^^^^ constant.numeric.lipi
+  #16'0
+; ^^^^^ constant.numeric.lipi
   #2'101
 ; ^^^^^^ constant.numeric.lipi
   #16'1f
@@ -27,15 +65,93 @@
   #16'4865_316f_774f_6c64
 ; ^^^^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
 
+;; VALID integer number literals in custom base with exponent
+
+  #2'0'e1
+; ^^^^^^^ constant.numeric.lipi
+  #16'0'e-4
+; ^^^^^^^^^ constant.numeric.lipi
+  #2'101'e+50
+; ^^^^^^^^^^^ constant.numeric.lipi
+  #16'1f'e-123
+; ^^^^^^^^^^^^ constant.numeric.lipi
+  #16'4865_316f_774f_6c64'e987
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative integer number literals in custom base
+
+  -#2'0
+; ^^^^^ constant.numeric.lipi
+  -#16'0
+; ^^^^^^ constant.numeric.lipi
+  -#2'101
+; ^^^^^^^ constant.numeric.lipi
+  -#16'1f
+; ^^^^^^^ constant.numeric.lipi
+  -#16'4865_316f_774f_6c64
+; ^^^^^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative integer number literals in custom base with exponent
+
+  -#2'0'e1
+; ^^^^^^^^ constant.numeric.lipi
+  -#16'0'e-4
+; ^^^^^^^^^^ constant.numeric.lipi
+  -#2'101'e+50
+; ^^^^^^^^^^^^ constant.numeric.lipi
+  -#16'1f'e-123
+; ^^^^^^^^^^^^^ constant.numeric.lipi
+  -#16'4865_316f_774f_6c64'e987
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
 ;; VALID float number literals
 
+  0.0
+; ^^^ constant.numeric.lipi
   2.3
 ; ^^^ constant.numeric.lipi
-  2.3'e3
-; ^^^^^^ constant.numeric.lipi
-  2.3'e+3
-; ^^^^^^^ constant.numeric.lipi
-  2.3'e-3
-; ^^^^^^^ constant.numeric.lipi
-  1_234.333_333
+  000987.654000
 ; ^^^^^^^^^^^^^ constant.numeric.lipi
+  1_2_3_4.5_6_7
+; ^^^^^^^^^^^^^ constant.numeric.lipi
+  1_234.567_890
+; ^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID float number literals with exponent
+
+  0.0e1
+; ^^^^^ constant.numeric.lipi
+  2.3'e+12
+; ^^^^^^^^ constant.numeric.lipi
+  000987.654000e+123
+; ^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+  1_2_3_4.5_6_7e9
+; ^^^^^^^^^^^^^^^ constant.numeric.lipi
+  1_234.567_890'e+987
+; ^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative float number literals
+
+  -0.0
+; ^^^^ constant.numeric.lipi
+  -2.3
+; ^^^^ constant.numeric.lipi
+  -000987.654000
+; ^^^^^^^^^^^^^^ constant.numeric.lipi
+  -1_2_3_4.5_6_7
+; ^^^^^^^^^^^^^^ constant.numeric.lipi
+  -1_234.567_890
+; ^^^^^^^^^^^^^^ constant.numeric.lipi
+
+;; VALID negative float number literals with exponent
+
+  -0.0e1
+; ^^^^^^ constant.numeric.lipi
+  -2.3'e+12
+; ^^^^^^^^^ constant.numeric.lipi
+  -000987.654000e+123
+; ^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi
+  -1_2_3_4.5_6_7e9
+; ^^^^^^^^^^^^^^^^ constant.numeric.lipi
+  -1_234.567_890'e+987
+; ^^^^^^^^^^^^^^^^^^^^ constant.numeric.lipi

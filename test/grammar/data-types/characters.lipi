@@ -51,10 +51,10 @@
   \\u{deadbeef}
 ; ^^^^^^^^^^^^^ string.quoted.single.lipi
 ;  ^^^^^^^^^^^^ constant.character.escape.lipi
-  \\u{deaf_beef}
+  \\u{dead_beef}
 ; ^^^^^^^^^^^^^^ string.quoted.single.lipi
 ;  ^^^^^^^^^^^^^ constant.character.escape.lipi
-  \\u{d_e_a_f_b_e_e_f}
+  \\u{d_e_a_d_b_e_e_f}
 ; ^^^^^^^^^^^^^^^^^^^^ string.quoted.single.lipi
 ;  ^^^^^^^^^^^^^^^^^^^ constant.character.escape.lipi
 

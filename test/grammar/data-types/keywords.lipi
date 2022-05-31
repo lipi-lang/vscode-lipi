@@ -3,97 +3,97 @@
 ;; VALID keywords
 
   :a
-; ^^ entity.name.tag.lipi
+; ^^ constant.language.lipi
   :apple
-; ^^^^^^ entity.name.tag.lipi
+; ^^^^^^ constant.language.lipi
   :helloWORLD
-; ^^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^^ constant.language.lipi
   :HELLO-world-123
-; ^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^^^^^^^ constant.language.lipi
   :-123:456:789:000-
-; ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^^^^^^^^^ constant.language.lipi
   :! :? :* :- := :_ :+ :'
-; ^^ ^^ ^^ ^^ ^^ ^^ ^^ ^^ entity.name.tag.lipi
-;   ^  ^  ^  ^  ^  ^  ^  ^ - entity.name.tag.lipi
+; ^^ ^^ ^^ ^^ ^^ ^^ ^^ ^^ constant.language.lipi
+;   ^  ^  ^  ^  ^  ^  ^  ^ - constant.language.lipi
 
 ;; VALID keywords in parenthesis, brackets and braces
 
   (:a :apple :HELLO-world-123 :-123:456:789:000-)
-;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ constant.language.lipi
   [:a :apple :HELLO-world-123 :-123:456:789:000-]
-;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ constant.language.lipi
   {:a :apple :HELLO-world-123 :-123:456:789:000-}
-;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;  ^^ ^^^^^^ ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^ constant.language.lipi
   ((:a) [[:apple] {{:HELLO-world-123} ([{:-123:456:789:000-}])}])
-;   ^^    ^^^^^^    ^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^ entity.name.tag.lipi
+;   ^^    ^^^^^^    ^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^ constant.language.lipi
 
 ;; VALID keywords with Unicode code points
 
   :åçéîñøœßü
-; ^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^ constant.language.lipi
   :njerëzore
-; ^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^ constant.language.lipi
   :čovjek
-; ^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^ constant.language.lipi
   :člověk
-; ^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^ constant.language.lipi
   :بشري
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
   :ሰው
-; ^^^ entity.name.tag.lipi
+; ^^^ constant.language.lipi
   :մարդ
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
   :মানব
-; ^^^^ entity.name.tag.lipi
+; ^^^^ constant.language.lipi
   :人的
-; ^^^ entity.name.tag.lipi
+; ^^^ constant.language.lipi
   :человек
-; ^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^ constant.language.lipi
   :मानव
-; ^^^^ entity.name.tag.lipi
+; ^^^^ constant.language.lipi
   :ადამიანური
-; ^^^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^^^ constant.language.lipi
   :άνθρωπος
-; ^^^^^^^^^ entity.name.tag.lipi
+; ^^^^^^^^^ constant.language.lipi
   :માનવ
-; ^^^^ entity.name.tag.lipi
+; ^^^^ constant.language.lipi
   :אנוש
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
   :ヒューマン
-; ^^^^^^ entity.name.tag.lipi
+; ^^^^^^ constant.language.lipi
   :ಮಾನವ
-; ^^^^ entity.name.tag.lipi
+; ^^^^ constant.language.lipi
   :មនុស្ស
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
   :인간
-; ^^^ entity.name.tag.lipi
+; ^^^ constant.language.lipi
   :ມະນຸດ
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
   :മനുഷ്യൻ
-; ^^^^^^ entity.name.tag.lipi
+; ^^^^^^ constant.language.lipi
   :လူ့
-; ^^ entity.name.tag.lipi
+; ^^ constant.language.lipi
   :ମାନବ
-; ^^^^ entity.name.tag.lipi
+; ^^^^ constant.language.lipi
   :มนุษย์
-; ^^^^^ entity.name.tag.lipi
+; ^^^^^ constant.language.lipi
 
 ;; INVALID keywords
 
   :0
-; ^^ - entity.name.tag.lipi
+; ^^ - constant.language.lipi
   :1234
-; ^^^^^ - entity.name.tag.lipi
+; ^^^^^ - constant.language.lipi
   :, :. :~ :@ :# :$ :% :^ :& :| :/ :\ :( :) :[ :] :{ :}
-; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ - entity.name.tag.lipi
+; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ - constant.language.lipi
 
   -:a
-;  ^^ - entity.name.tag.lipi
+;  ^^ - constant.language.lipi
   #:-
-;  ^^ - entity.name.tag.lipi
+;  ^^ - constant.language.lipi
   ;:-
-;  ^^ - entity.name.tag.lipi
+;  ^^ - constant.language.lipi
   \:a
-;  ^^ - entity.name.tag.lipi
+;  ^^ - constant.language.lipi
   ":a"
-;  ^^ - entity.name.tag.lipi
+;  ^^ - constant.language.lipi
